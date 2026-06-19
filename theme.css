@@ -671,7 +671,7 @@ body.is-translucent .prompt {
 .cm-editor.cm-focused .cm-selectionBackground,
 .cm-line ::selection,
 .markdown-rendered ::selection {
-  background-color: var(--text-selection) !important;
+  background-color: var(--text-selection);
 }
 
 .cm-active.cm-line {
@@ -1234,8 +1234,8 @@ body:not(.is-focused) .workspace-tab-header.is-active { border-top-color: var(--
   *,
   *::before,
   *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.001ms;
   }
 }

@@ -2,7 +2,7 @@
 
 > A faithful port of Microsoft Visual Studio 2026's Fluent visual language to Obsidian, with first-class macOS vibrancy support.
 
-![Cover](docs/screenshots/cover.png)
+![VSCode 2026 theme preview](screenshot.png)
 
 ## Features
 
@@ -14,18 +14,9 @@
 - **Overlay scrollbars** — hidden by default, fade in on hover, macOS-style
 - **All third-party UI themed via CSS variables** — callouts (13 types), graph view, canvas, calendar, dataview — no hardcoded colors
 
-## Screenshots
+## Screenshot
 
-| Light | Dark |
-| --- | --- |
-| ![Light editor](docs/screenshots/light-editor.png) | ![Dark editor](docs/screenshots/dark-editor.png) |
-| ![Light graph](docs/screenshots/light-graph.png) | ![Dark graph](docs/screenshots/dark-graph.png) |
-
-### Code blocks
-![Code syntax](docs/screenshots/code-syntax.png)
-
-### Callouts
-![Callouts](docs/screenshots/callouts.png)
+![VSCode 2026 light and dark preview](screenshot.png)
 
 ## Installation
 
