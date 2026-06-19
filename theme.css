@@ -796,7 +796,7 @@ body.is-translucent .prompt {
 .cm-s-obsidian .tok-url               { color: var(--text-faint); }
 .cm-s-obsidian .cm-quote              { color: var(--text-muted); font-style: italic; }
 .cm-s-obsidian .cm-error,
-.cm-s-obsidian .tok-invalid           { color: var(--text-error); text-decoration: underline wavy; }
+.cm-s-obsidian .tok-invalid           { color: var(--text-error); text-decoration-line: underline; text-decoration-style: wavy; }
 .cm-s-obsidian .cm-regexp,
 .cm-s-obsidian .tok-regexp            { color: var(--code-regex); }
 .cm-s-obsidian .tok-controlKeyword    { color: var(--code-control); }
