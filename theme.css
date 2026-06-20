@@ -649,7 +649,13 @@ body.is-translucent .prompt {
   color: var(--text-normal);
   border-radius: var(--radius-s);
 }
-.search-input-container input { border-radius: var(--input-radius); }
+.search-input-container input {
+  border-radius: var(--input-radius);
+}
+.search-input-container input[type="text"],
+.search-input-container input[type="search"] {
+  padding-inline-start: 36px;
+}
 
 
 /* ============================================================
