@@ -1011,12 +1011,12 @@ a.tag:hover,
 .canvas-wrapper,
 .canvas-background {
   background-color: var(--canvas-background);
-  --canvas-color-1: 245, 102, 102;
-  --canvas-color-2: 245, 158, 11;
-  --canvas-color-3: 220, 220, 170;
-  --canvas-color-4: 78, 201, 176;
-  --canvas-color-5: 86, 156, 214;
-  --canvas-color-6: 197, 134, 192;
+  --canvas-color-1: rgb(245, 102, 102);
+  --canvas-color-2: rgb(245, 158, 11);
+  --canvas-color-3: rgb(220, 220, 170);
+  --canvas-color-4: rgb(78, 201, 176);
+  --canvas-color-5: rgb(86, 156, 214);
+  --canvas-color-6: rgb(197, 134, 192);
 }
 .canvas-node {
   background-color: var(--canvas-card-bg);
