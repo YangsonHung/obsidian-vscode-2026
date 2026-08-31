@@ -155,20 +155,20 @@
   --code-important:    #AF00DB;
 
   /* — Callouts (RGB triplets, consumed via rgba()) — */
-  --callout-note:     0, 95, 184;
-  --callout-tip:      22, 130, 93;
-  --callout-info:     0, 120, 152;
-  --callout-success:  22, 130, 93;
-  --callout-question: 188, 117, 0;
-  --callout-warning:  188, 117, 0;
-  --callout-failure:  209, 52, 56;
-  --callout-error:    209, 52, 56;
-  --callout-bug:      209, 52, 56;
-  --callout-example:  136, 23, 152;
-  --callout-quote:    100, 100, 100;
-  --callout-abstract: 0, 120, 152;
-  --callout-todo:     0, 95, 184;
-  --callout-import:   175, 0, 219;
+  --callout-note:     rgb(0, 95, 184);
+  --callout-tip:      rgb(22, 130, 93);
+  --callout-info:     rgb(0, 120, 152);
+  --callout-success:  rgb(22, 130, 93);
+  --callout-question: rgb(188, 117, 0);
+  --callout-warning:  rgb(188, 117, 0);
+  --callout-failure:  rgb(209, 52, 56);
+  --callout-error:    rgb(209, 52, 56);
+  --callout-bug:      rgb(209, 52, 56);
+  --callout-example:  rgb(136, 23, 152);
+  --callout-quote:    rgb(100, 100, 100);
+  --callout-abstract: rgb(0, 120, 152);
+  --callout-todo:     rgb(0, 95, 184);
+  --callout-import:   rgb(175, 0, 219);
 
   /* — Tags — */
   --tag-color:       #005FB8;
@@ -346,20 +346,20 @@
   --code-important:    #C586C0;
 
   /* — Callouts — */
-  --callout-note:     86, 156, 214;
-  --callout-tip:      78, 201, 176;
-  --callout-info:     86, 156, 214;
-  --callout-success:  78, 201, 176;
-  --callout-question: 220, 220, 170;
-  --callout-warning:  220, 220, 170;
-  --callout-failure:  244, 135, 113;
-  --callout-error:    244, 135, 113;
-  --callout-bug:      244, 135, 113;
-  --callout-example:  197, 134, 192;
-  --callout-quote:    156, 156, 156;
-  --callout-abstract: 78, 201, 176;
-  --callout-todo:     86, 156, 214;
-  --callout-import:   197, 134, 192;
+  --callout-note:     rgb(86, 156, 214);
+  --callout-tip:      rgb(78, 201, 176);
+  --callout-info:     rgb(86, 156, 214);
+  --callout-success:  rgb(78, 201, 176);
+  --callout-question: rgb(220, 220, 170);
+  --callout-warning:  rgb(220, 220, 170);
+  --callout-failure:  rgb(244, 135, 113);
+  --callout-error:    rgb(244, 135, 113);
+  --callout-bug:      rgb(244, 135, 113);
+  --callout-example:  rgb(197, 134, 192);
+  --callout-quote:    rgb(156, 156, 156);
+  --callout-abstract: rgb(78, 201, 176);
+  --callout-todo:     rgb(86, 156, 214);
+  --callout-import:   rgb(197, 134, 192);
 
   /* — Tags — */
   --tag-color:            #4A8AD8;
@@ -846,20 +846,20 @@ body.is-translucent .prompt {
  * ============================================================ */
 .callout {
   --callout-color: var(--callout-note);
-  background-color: rgba(var(--callout-color), 0.08);
-  border-left: 3px solid rgb(var(--callout-color));
+  background-color: color-mix(in srgb, var(--callout-color) 8%, transparent);
+  border-left: 3px solid var(--callout-color);
   border-radius: var(--callout-radius);
   padding: 10px 14px;
   box-shadow: var(--shadow-s);
 }
-.theme-dark .callout { background-color: rgba(var(--callout-color), 0.12); }
+.theme-dark .callout { background-color: color-mix(in srgb, var(--callout-color) 12%, transparent); }
 
 .callout-title {
-  color: rgb(var(--callout-color));
+  color: var(--callout-color);
   font-weight: 600;
   font-size: 0.95em;
 }
-.callout-icon { color: rgb(var(--callout-color)); }
+.callout-icon { color: var(--callout-color); }
 .callout-content { color: var(--text-normal); }
 
 .callout[data-callout="note"]      { --callout-color: var(--callout-note); }
