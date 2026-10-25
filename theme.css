@@ -26,6 +26,70 @@
  *  18  Animations & Focus States
  * ============================================================ */
 
+/* @settings
+name: VSCode
+id: vscode-theme
+settings:
+  - id: vscode-markdown-style
+    title: Markdown 样式
+    description: VS Code 参考官方 Markdown 预览的标题层级、下划线、字重与段落间距；Legacy 保留原有样式。适用于阅读视图和编辑视图，不影响界面配色。
+    type: class-select
+    allowEmpty: false
+    default: vscode-markdown-native
+    options:
+      - label: VS Code
+        value: vscode-markdown-native
+      - label: Legacy
+        value: vscode-markdown-legacy
+  - id: vscode-light-palette
+    title: 浅色配色
+    description: 切换浅色界面与代码高亮配色；深色模式保持当前配色。
+    type: class-select
+    allowEmpty: false
+    default: vscode-light-2026
+    options:
+      - label: VS Code 2026 Light
+        value: vscode-light-2026
+      - label: VS Code Light Modern
+        value: vscode-light-modern
+  - id: vscode-use-obsidian-accent
+    title: 使用 Obsidian 强调色覆写
+    description: 开启后使用「外观 → 强调色」；关闭后使用下方主题强调色，未自定义时跟随当前配色。
+    type: class-toggle
+    default: false
+  - id: vscode-accent
+    title: 主题强调色（浅色 / 深色）
+    description: 仅关闭 Obsidian 强调色覆写时生效。两个颜色可分别重置；浅色重置后跟随配色（2026 为 #0069CC，Light Modern 为 #005FB8），深色为 #2F72C4。
+    type: variable-themed-color
+    format: hex
+    opacity: false
+    default-light: '#0069CC'
+    default-dark: '#2F72C4'
+    alt-format:
+      - id: vscode-accent
+        format: hsl-split
+      - id: vscode-accent
+        format: rgb-split
+  - id: vscode-hyphenation-justification
+    title: 两端对齐与自动断词
+    description: 在阅读视图和编辑视图中启用正文两端对齐与自动断词。
+    type: class-toggle
+    default: true
+  - id: vscode-dim-completed-tasks
+    title: 已完成待办文字变淡
+    description: 勾选后保留文字原有配色并降低不透明度，不显示删除线；关闭后恢复整行删除线。适用于阅读视图和实时预览。
+    type: class-toggle
+    default: true
+  - id: vscode-completed-task-opacity
+    title: 已完成待办文字不透明度（%）
+    description: 仅开启上方开关时生效。数值越小越淡，100 保留原色；超链接、粗体和行内代码保持各自配色。
+    type: variable-number-slider
+    default: 50
+    min: 0
+    max: 100
+    step: 5
+*/
+
 
 /* ============================================================
  *  Section 1 — Root Variables (shared)
@@ -73,86 +137,96 @@
 
 /* ============================================================
  *  Section 2 — Light Mode Variables
- *  VS 2026 Fluent Light + VSCode Light+ syntax tokens
+ *  VS Code 2026 Light workbench and syntax colors
  * ============================================================ */
 .theme-light {
   /* — Accent / interactive — */
-  --interactive-accent:        #005FB8;
-  --interactive-accent-hover:  #1A6FBE;
-  --interactive-accent-rgb:    0, 95, 184;
-  --text-on-accent:            #FFFFFF;
+  --vscode-accent-default: #0069CC;
+  --vscode-accent-default-h: 209.11764705882354;
+  --vscode-accent-default-s: 100%;
+  --vscode-accent-default-l: 40%;
+  --vscode-accent-default-r: 0;
+  --vscode-accent-default-g: 105;
+  --vscode-accent-default-b: 204;
+  --vscode-accent-hover-default: #0063C1;
+  --vscode-accent-hover-mix: black;
+  --interactive-accent-background:    #FAFAFD;
 
   /* — Backgrounds — */
   --background-primary:        #FFFFFF;
-  --background-primary-alt:    #F6F8FC;
-  --background-secondary:      #F6F8FC;
-  --background-secondary-alt:  #DDE7FF;
+  --background-primary-alt:    #FAFAFD;
+  --background-secondary:      #FAFAFD;
+  --background-secondary-alt:  #FAFAFD;
 
-  --background-modifier-hover:        rgba(0, 95, 184, 0.08);
-  --background-modifier-active-hover: rgba(0, 95, 184, 0.14);
-  --background-modifier-border:        rgba(149, 164, 191, 0.45);
-  --background-modifier-border-hover:  rgba(149, 164, 191, 0.7);
-  --background-modifier-border-focus:  #005FB8;
+  --background-modifier-hover:        #00000014;
+  --background-modifier-active-hover: #00000025;
+  --background-modifier-border:        #F0F1F2;
+  --background-modifier-border-hover:  #D8D8D8;
   --background-modifier-form-field:    #FFFFFF;
   --background-modifier-error:         rgba(209, 52, 56, 0.12);
   --background-modifier-success:       rgba(22, 130, 93, 0.12);
 
   /* — Chrome — */
-  --titlebar-background:         #DDE7FF;
-  --titlebar-background-focused: #DDE7FF;
-  --ribbon-background:           #F6F8FC;
-  --status-bar-background:       #005FB8;
-  --status-bar-text-color:       #FFFFFF;
-  --status-bar-border-color:     transparent;
+  --titlebar-background:         #FAFAFD;
+  --titlebar-background-focused: #FAFAFD;
+  --titlebar-text-color:         #606060;
+  --titlebar-text-color-focused: #606060;
+  --titlebar-border-color:       #F0F1F2;
+  --vscode-window-control-hover-background: rgba(0, 0, 0, 0.1);
+  --vscode-widget-background:    #FAFAFD;
+  --vscode-widget-border:        #E4E5E6;
+  --vscode-tab-active-border:    #000000;
+  --vscode-status-bar-hover-background: #E3E3E5;
+  --ribbon-background:           #FAFAFD;
+  --status-bar-background:       #FAFAFD;
+  --status-bar-text-color:       #606060;
+  --status-bar-border-color:     #F0F1F2;
 
   /* — Text — */
-  --text-normal:        #1F1F1F;
-  --text-muted:         #5A5A5A;
-  --text-faint:         #8A8A8A;
-  --text-accent:        #005FB8;
-  --text-accent-hover:  #1A6FBE;
+  --text-normal:        #202020;
+  --text-muted:         #606060;
+  --text-faint:         #999999;
   --text-error:         #D13438;
   --text-success:       #16825D;
   --text-warning:       #BC7500;
-  --text-selection:     rgba(0, 95, 184, 0.18);
   --text-highlight-bg:  rgba(255, 213, 0, 0.45);
 
   /* — Headings (subtle blue gradient feel) — */
   --h1-color: #1F1F1F;
   --h2-color: #1F1F1F;
   --h3-color: #005FB8;
-  --h4-color: #267F99;
-  --h5-color: #795E26;
-  --h6-color: #5A5A5A;
+  --h4-color: #005FB8;
+  --h5-color: #1F1F1F;
+  --h6-color: #1F1F1F;
   --inline-title-color: var(--text-normal);
 
   /* — Links — */
-  --link-color:                #005FB8;
-  --link-color-hover:          #1A6FBE;
-  --link-external-color:       #005FB8;
-  --link-external-color-hover: #AF00DB;
   --link-unresolved-color:     #D13438;
   --link-unresolved-opacity:   0.7;
 
-  /* — Code (Light+) — */
-  --code-background:   #F3F3F3;
-  --code-normal:       #1F1F1F;
-  --code-keyword:      #0000FF;
-  --code-string:       #A31515;
-  --code-comment:      #008000;
-  --code-function:     #795E26;
-  --code-variable:     #001080;
-  --code-property:     #001080;
-  --code-type:         #267F99;
-  --code-tag:          #800000;
-  --code-attribute:    #E50000;
-  --code-number:       #098658;
-  --code-operator:     #1F1F1F;
-  --code-punctuation:  #1F1F1F;
-  --code-control:      #AF00DB;
-  --code-builtin:      #267F99;
-  --code-regex:        #811F3F;
-  --code-important:    #AF00DB;
+  /* — Code (VS Code 2026 Light) — */
+  --code-background:   #EAEAEA;
+  --code-normal:       #202020;
+  --code-keyword:      #CF222E;
+  --code-string:       #0A3069;
+  --code-comment:      #6E7781;
+  --code-function:     #8250DF;
+  --code-variable:     #953800;
+  --code-property:     #1F2328;
+  --code-type:         #953800;
+  --code-json-property: #116329;
+  --code-tag:          #116329;
+  --code-attribute:    #1F2328;
+  --code-number:       #0550AE;
+  --code-operator:     #CF222E;
+  --code-punctuation:  #202020;
+  --code-control:      #CF222E;
+  --code-builtin:      #0550AE;
+  --code-regex:        #0A3069;
+  --code-important:    #CF222E;
+  --code-invalid:      #82071E;
+  --code-inserted:     #116329;
+  --code-deleted:      #82071E;
 
   /* — Callouts (RGB triplets, consumed via rgba()) — */
   --callout-note:     0, 95, 184;
@@ -171,10 +245,6 @@
   --callout-import:   175, 0, 219;
 
   /* — Tags — */
-  --tag-color:       #005FB8;
-  --tag-color-hover: #1A6FBE;
-  --tag-background:  rgba(0, 95, 184, 0.10);
-  --tag-background-hover: rgba(0, 95, 184, 0.18);
   --tag-radius:      var(--radius-pill);
   --tag-border-color: transparent;
   --tag-border-width: 0;
@@ -182,24 +252,23 @@
   --tag-padding-y:   1px;
 
   /* — Tables — */
-  --table-border-color:      var(--background-modifier-border);
-  --table-header-background: #F6F8FC;
-  --table-header-color:      var(--text-normal);
-  --table-row-alt-background: #FAFBFD;
-  --table-row-hover-background: rgba(0, 95, 184, 0.05);
+  --table-border-color:          var(--background-modifier-border);
+  --table-header-border-color:   rgba(0, 0, 0, 0.69);
+  --table-row-border-color:      rgba(0, 0, 0, 0.18);
+  --table-header-background:     transparent;
+  --table-header-color:          var(--text-normal);
+  --table-row-alt-background:    transparent;
+  --table-row-hover-background:  transparent;
 
   /* — Blockquote — */
   --blockquote-border-color: rgba(149, 164, 191, 0.7);
   --blockquote-color:        #5A5A5A;
-  --bold-color:              #005FB8;
+  --bold-color:              #000000;
+  --markdown-rule-color:     rgba(0, 0, 0, 0.18);
   --italic-color:            #795E26;
 
   /* — Checkbox — */
-  --checkbox-color:               #005FB8;
-  --checkbox-color-hover:         #1A6FBE;
   --checkbox-border-color:        rgba(149, 164, 191, 0.7);
-  --checkbox-border-color-hover:  #005FB8;
-  --checkbox-marker-color:        #FFFFFF;
 
   /* — Graph view — */
   --graph-line:             #95A4BF;
@@ -207,7 +276,6 @@
   --graph-node-tag:         #267F99;
   --graph-node-attachment:  #795E26;
   --graph-node-unresolved:  #B0B0B0;
-  --graph-node-focused:     #005FB8;
   --graph-text:             #1F1F1F;
   --graph-fill-tag:         #267F99;
   --graph-fill-attachment:  #795E26;
@@ -225,7 +293,6 @@
   --color-text-day:           var(--text-normal);
   --color-text-today:         var(--interactive-accent);
   --color-background-day:     transparent;
-  --color-background-today:   rgba(0, 95, 184, 0.12);
   --color-dot:                var(--interactive-accent);
 
   /* — Tab — */
@@ -238,7 +305,8 @@
   /* — Nav — */
   --nav-item-color:               var(--text-muted);
   --nav-item-color-hover:         var(--text-normal);
-  --nav-item-color-active:        var(--interactive-accent);
+  --nav-item-color-active:        var(--text-normal);
+  --nav-item-color-selected:      var(--nav-item-color-active);
   --nav-item-background-hover:    var(--background-modifier-hover);
   --nav-item-background-active:   var(--background-modifier-active-hover);
 
@@ -249,11 +317,9 @@
 
   /* — Indentation guides — */
   --indentation-guide-color:        rgba(0, 0, 0, 0.06);
-  --indentation-guide-color-active: rgba(0, 95, 184, 0.30);
 
   /* — Divider — */
   --divider-color:        var(--background-modifier-border);
-  --divider-color-hover:  #005FB8;
 
   /* — Shadows — */
   --shadow-s: 0 1px 2px rgba(15, 30, 60, 0.06);
@@ -262,88 +328,181 @@
 }
 
 
+/* Optional light preset selected by Style Settings. Sources:
+ * microsoft/vscode extensions/theme-defaults/themes/light_modern.json,
+ * with syntax colors inherited from light_plus.json and light_vs.json.
+ * Keep typography, Markdown separators and code scrolling independent. */
+.theme-light.vscode-light-modern {
+  --vscode-accent-default: #005FB8;
+  --vscode-accent-default-h: 209.02173913043478;
+  --vscode-accent-default-l: 36.07843137254902%;
+  --vscode-accent-default-g: 95;
+  --vscode-accent-default-b: 184;
+  --vscode-accent-hover-default: #0258A8;
+  --interactive-accent-background: #F8F8F8;
+  --background-primary: #FFFFFF;
+  --background-primary-alt: #F8F8F8;
+  --background-secondary: #F8F8F8;
+  --background-secondary-alt: #F8F8F8;
+  --background-modifier-hover: #F2F2F2;
+  --background-modifier-active-hover: #E8E8E8;
+  --background-modifier-border: #E5E5E5;
+  --background-modifier-border-hover: #CECECE;
+  --background-modifier-form-field: #FFFFFF;
+
+  --titlebar-background: #F8F8F8;
+  --titlebar-background-focused: #F8F8F8;
+  --titlebar-text-color: #8B949E;
+  --titlebar-text-color-focused: #1E1E1E;
+  --titlebar-border-color: #E5E5E5;
+  --ribbon-background: #F8F8F8;
+  --status-bar-background: #F8F8F8;
+  --status-bar-text-color: #3B3B3B;
+  --status-bar-border-color: #E5E5E5;
+  --vscode-widget-background: #F8F8F8;
+  --vscode-widget-border: #E5E5E5;
+  --vscode-tab-active-border: var(--interactive-accent);
+  --vscode-status-bar-hover-background: #1F1F1F11;
+
+  --text-normal: #3B3B3B;
+  --text-muted: #616161;
+  --text-faint: #767676;
+  --text-error: #F85149;
+  --text-success: #2EA043;
+  --setting-group-heading-color: #1F1F1F;
+  --link-unresolved-color: #F85149;
+  --tab-text-color: #616161;
+  --tab-text-color-active: #3B3B3B;
+  --tab-text-color-focused-active: #3B3B3B;
+  --nav-item-color-active: #000000;
+
+  /* Light Modern uses Light+ syntax colors, rather than the 2026 palette. */
+  --code-background: #F8F8F8;
+  --code-normal: #3B3B3B;
+  --code-keyword: #0000FF;
+  --code-string: #A31515;
+  --code-comment: #008000;
+  --code-function: #795E26;
+  --code-variable: #001080;
+  --code-property: #001080;
+  --code-type: #267F99;
+  --code-json-property: #0451A5;
+  --code-tag: #800000;
+  --code-attribute: #E50000;
+  --code-number: #098658;
+  --code-operator: #000000;
+  --code-punctuation: #3B3B3B;
+  --code-control: #AF00DB;
+  --code-builtin: #267F99;
+  --code-regex: #811F3F;
+  --code-important: #AF00DB;
+  --code-invalid: #CD3131;
+  --code-inserted: #098658;
+  --code-deleted: #A31515;
+
+  --blockquote-border-color: #E5E5E5;
+  --blockquote-color: #3B3B3B;
+  --checkbox-border-color: #CECECE;
+  --indentation-guide-color: #D3D3D3;
+  --canvas-background: #F8F8F8;
+  --canvas-card-bg: #FFFFFF;
+  --canvas-edge: #616161;
+}
+
+
 /* ============================================================
  *  Section 3 — Dark Mode Variables
- *  Fluent Dark surfaces + VSCode Dark+ syntax tokens
+ *  VS Code 2026 Dark workbench surfaces and syntax tokens
+ *  Source: microsoft/vscode extensions/theme-defaults/themes/2026-dark.json
  * ============================================================ */
 .theme-dark {
   /* — Accent — */
-  --interactive-accent:        #2F72C4;
-  --interactive-accent-hover:  #4A8AD8;
-  --interactive-accent-rgb:    47, 114, 196;
-  --text-on-accent:            #FFFFFF;
+  --vscode-accent-default: #2F72C4;
+  --vscode-accent-default-h: 213.0201342281879;
+  --vscode-accent-default-s: 61.31687242798354%;
+  --vscode-accent-default-l: 47.64705882352941%;
+  --vscode-accent-default-r: 47;
+  --vscode-accent-default-g: 114;
+  --vscode-accent-default-b: 196;
+  --vscode-accent-hover-default: #4A8AD8;
+  --vscode-accent-hover-mix: white;
+  --interactive-accent-background:    #242526;
 
   /* — Backgrounds — */
-  --background-primary:        #1F1F1F;
-  --background-primary-alt:    #181818;
-  --background-secondary:      #181818;
-  --background-secondary-alt:  #2A2D2E;
+  --background-primary:        #121314;
+  --background-primary-alt:    #191A1B;
+  --background-secondary:      #191A1B;
+  --background-secondary-alt:  #202122;
 
-  --background-modifier-hover:        rgba(255, 255, 255, 0.06);
-  --background-modifier-active-hover: rgba(47, 114, 196, 0.22);
-  --background-modifier-border:       rgba(255, 255, 255, 0.08);
-  --background-modifier-border-hover: rgba(255, 255, 255, 0.16);
-  --background-modifier-border-focus: #2F72C4;
-  --background-modifier-form-field:   #1F1F1F;
+  --background-modifier-hover:        #FFFFFF14;
+  --background-modifier-active-hover: #FFFFFF22;
+  --background-modifier-border:       #2A2B2C;
+  --background-modifier-border-hover: #333536;
+  --background-modifier-form-field:   #191A1B;
   --background-modifier-error:        rgba(244, 135, 113, 0.16);
   --background-modifier-success:      rgba(78, 201, 176, 0.16);
 
   /* — Chrome — */
-  --titlebar-background:         #181818;
-  --titlebar-background-focused: #181818;
-  --ribbon-background:           #181818;
-  --status-bar-background:       #2F72C4;
-  --status-bar-text-color:       #FFFFFF;
-  --status-bar-border-color:     transparent;
+  --titlebar-background:         #121314;
+  --titlebar-background-focused: #191A1B;
+  --titlebar-text-color:         #8C8C8C;
+  --titlebar-text-color-focused: #8C8C8C;
+  --titlebar-border-color:       var(--background-modifier-border);
+  --vscode-window-control-hover-background: rgba(255, 255, 255, 0.1);
+  --ribbon-background:           #191A1B;
+  --status-bar-background:       #191A1B;
+  --vscode-status-bar-background-inactive: #121314;
+  --status-bar-text-color:       #8C8C8C;
+  --status-bar-border-color:     #2A2B2C;
+  --vscode-status-bar-hover-background: #323233;
+  --vscode-widget-background:    #202122;
+  --vscode-widget-border:        #2A2B2C;
 
   /* — Text — */
   --text-normal:        #CCCCCC;
   --text-muted:         #9D9D9D;
   --text-faint:         #6E6E6E;
-  --text-accent:        #4A8AD8;
-  --text-accent-hover:  #6BA3E5;
   --text-error:         #F48771;
   --text-success:       #4EC9B0;
   --text-warning:       #DCDCAA;
-  --text-selection:     rgba(47, 114, 196, 0.30);
   --text-highlight-bg:  rgba(220, 220, 170, 0.22);
 
   /* — Headings — */
   --h1-color: #D4D4D4;
   --h2-color: #D4D4D4;
   --h3-color: #569CD6;
-  --h4-color: #4EC9B0;
-  --h5-color: #DCDCAA;
-  --h6-color: #9D9D9D;
+  --h4-color: rgb(101, 184, 252);
+  --h5-color: #D4D4D4;
+  --h6-color: #D4D4D4;
   --inline-title-color: var(--text-normal);
 
   /* — Links — */
-  --link-color:                #4A8AD8;
-  --link-color-hover:          #6BA3E5;
-  --link-external-color:       #4A8AD8;
-  --link-external-color-hover: #C586C0;
   --link-unresolved-color:     #F48771;
   --link-unresolved-opacity:   0.7;
 
-  /* — Code (Dark+) — */
-  --code-background:   #1E1E1E;
-  --code-normal:       #D4D4D4;
-  --code-keyword:      #569CD6;
-  --code-string:       #CE9178;
-  --code-comment:      #6A9955;
-  --code-function:     #DCDCAA;
-  --code-variable:     #9CDCFE;
-  --code-property:     #9CDCFE;
-  --code-type:         #4EC9B0;
-  --code-tag:          #569CD6;
-  --code-attribute:    #9CDCFE;
-  --code-number:       #B5CEA8;
-  --code-operator:     #D4D4D4;
-  --code-punctuation:  #D4D4D4;
-  --code-control:      #C586C0;
-  --code-builtin:      #4EC9B0;
-  --code-regex:        #D16969;
-  --code-important:    #C586C0;
+  /* — Code (VS Code 2026 Dark) — */
+  --code-background:   #242526;
+  --code-normal:       #BBBEBF;
+  --code-keyword:      #FF7B72;
+  --code-string:       #A5D6FF;
+  --code-comment:      #8B949E;
+  --code-function:     #D2A8FF;
+  --code-variable:     #FFA657;
+  --code-property:     #C9D1D9;
+  --code-type:         #FFA657;
+  --code-json-property: #7EE787;
+  --code-tag:          #7EE787;
+  --code-attribute:    #C9D1D9;
+  --code-number:       #79C0FF;
+  --code-operator:     #FF7B72;
+  --code-punctuation:  #BBBEBF;
+  --code-control:      #FF7B72;
+  --code-builtin:      #79C0FF;
+  --code-regex:        #A5D6FF;
+  --code-important:    #FF7B72;
+  --code-invalid:      #FFA198;
+  --code-inserted:     #7EE787;
+  --code-deleted:      #FFA198;
 
   /* — Callouts — */
   --callout-note:     86, 156, 214;
@@ -362,30 +521,25 @@
   --callout-import:   197, 134, 192;
 
   /* — Tags — */
-  --tag-color:            #4A8AD8;
-  --tag-color-hover:      #6BA3E5;
-  --tag-background:       rgba(47, 114, 196, 0.18);
-  --tag-background-hover: rgba(47, 114, 196, 0.32);
 
   /* — Tables — */
-  --table-border-color:         var(--background-modifier-border);
-  --table-header-background:    #252526;
-  --table-header-color:         var(--text-normal);
-  --table-row-alt-background:   #1A1A1A;
-  --table-row-hover-background: rgba(47, 114, 196, 0.10);
+  --table-border-color:          var(--background-modifier-border);
+  --table-header-border-color:   rgba(255, 255, 255, 0.69);
+  --table-row-border-color:      rgba(255, 255, 255, 0.18);
+  --table-header-background:     transparent;
+  --table-header-color:          var(--text-normal);
+  --table-row-alt-background:    transparent;
+  --table-row-hover-background:  transparent;
 
   /* — Blockquote — */
   --blockquote-border-color: rgba(255, 255, 255, 0.16);
   --blockquote-color:        #9D9D9D;
-  --bold-color:              #569CD6;
+  --bold-color:              var(--text-normal);
+  --markdown-rule-color:     rgba(255, 255, 255, 0.18);
   --italic-color:            #CE9178;
 
   /* — Checkbox — */
-  --checkbox-color:              #2F72C4;
-  --checkbox-color-hover:        #4A8AD8;
   --checkbox-border-color:       rgba(255, 255, 255, 0.30);
-  --checkbox-border-color-hover: #4A8AD8;
-  --checkbox-marker-color:       #FFFFFF;
 
   /* — Graph view — */
   --graph-line:             rgba(255, 255, 255, 0.10);
@@ -393,33 +547,32 @@
   --graph-node-tag:         #4EC9B0;
   --graph-node-attachment:  #DCDCAA;
   --graph-node-unresolved:  #5A5A5A;
-  --graph-node-focused:     #4A8AD8;
   --graph-text:             #CCCCCC;
   --graph-fill-tag:         #4EC9B0;
   --graph-fill-attachment:  #DCDCAA;
   --graph-fill-unresolved:  rgba(90, 90, 90, 0.4);
 
   /* — Canvas — */
-  --canvas-background:  #1A1A1A;
-  --canvas-card-bg:     #252526;
+  --canvas-background:  var(--background-primary);
+  --canvas-card-bg:     var(--background-secondary);
   --canvas-card-border: var(--background-modifier-border);
   --canvas-edge:        #9D9D9D;
 
   /* — Calendar — */
-  --color-background-today: rgba(47, 114, 196, 0.22);
   --color-dot:              var(--interactive-accent);
 
   /* — Tab — */
   --tab-background-active:        var(--background-primary);
   --tab-container-background:     var(--background-secondary);
-  --tab-text-color:               var(--text-muted);
-  --tab-text-color-active:        var(--text-normal);
-  --tab-text-color-focused-active: var(--text-normal);
+  --tab-text-color:               #8C8C8C;
+  --tab-text-color-active:        #BFBFBF;
+  --tab-text-color-focused-active: #BFBFBF;
 
   /* — Nav — */
   --nav-item-color:             var(--text-muted);
   --nav-item-color-hover:       #FFFFFF;
   --nav-item-color-active:      #FFFFFF;
+  --nav-item-color-selected:    var(--nav-item-color-active);
   --nav-item-background-hover:  var(--background-modifier-hover);
   --nav-item-background-active: var(--background-modifier-active-hover);
 
@@ -430,11 +583,9 @@
 
   /* — Indentation guides — */
   --indentation-guide-color:        rgba(255, 255, 255, 0.05);
-  --indentation-guide-color-active: rgba(74, 138, 216, 0.45);
 
   /* — Divider — */
   --divider-color:       var(--background-modifier-border);
-  --divider-color-hover: #2F72C4;
 
   /* — Shadows — */
   --shadow-s: 0 1px 2px rgba(0, 0, 0, 0.30);
@@ -443,14 +594,112 @@
 }
 
 
+/* Accent source: Obsidian's inline HSL values are authoritative only when
+ * the override switch is enabled. Style Settings keeps its color variables
+ * separate, so switching sources never discards either saved preference. */
+body.theme-light,
+body.theme-dark {
+  --interactive-accent: var(--color-accent);
+  /* Older plugins consume raw RGB triplets. Convert Obsidian's inline HSL
+   * channels too, so their translucent accents follow the same source. */
+  --vscode-obsidian-accent-l: tan(atan2(var(--accent-l), 100%));
+  --vscode-obsidian-accent-s: tan(atan2(var(--accent-s), 100%));
+  --vscode-obsidian-accent-a: calc(var(--vscode-obsidian-accent-s) * min(var(--vscode-obsidian-accent-l), 1 - var(--vscode-obsidian-accent-l)));
+  --vscode-obsidian-accent-phase: calc(var(--accent-h) / 30);
+  --vscode-obsidian-accent-r: calc(255 * (var(--vscode-obsidian-accent-l) - var(--vscode-obsidian-accent-a) * max(-1, min(var(--vscode-obsidian-accent-phase) - 3, 9 - var(--vscode-obsidian-accent-phase), 1))));
+  --vscode-obsidian-accent-g: calc(255 * (var(--vscode-obsidian-accent-l) - var(--vscode-obsidian-accent-a) * max(-1, min(var(--vscode-obsidian-accent-phase) + 5, 1 - var(--vscode-obsidian-accent-phase), 1), min(var(--vscode-obsidian-accent-phase) - 7, 13 - var(--vscode-obsidian-accent-phase), 1))));
+  --vscode-obsidian-accent-b: calc(255 * (var(--vscode-obsidian-accent-l) - var(--vscode-obsidian-accent-a) * max(-1, min(var(--vscode-obsidian-accent-phase) + 1, 5 - var(--vscode-obsidian-accent-phase), 1), min(var(--vscode-obsidian-accent-phase) - 11, 17 - var(--vscode-obsidian-accent-phase), 1))));
+  --interactive-accent-rgb: var(--vscode-obsidian-accent-r), var(--vscode-obsidian-accent-g), var(--vscode-obsidian-accent-b);
+  --interactive-accent-hover: color-mix(in srgb, var(--interactive-accent) 94%, var(--vscode-accent-hover-mix));
+  --color-accent-1: var(--interactive-accent-hover);
+  --color-accent-2: var(--interactive-accent-hover);
+  --text-accent: var(--interactive-accent);
+  --text-accent-hover: var(--interactive-accent-hover);
+  --link-color: var(--text-accent);
+  --link-color-hover: var(--text-accent-hover);
+  --link-external-color: var(--text-accent);
+  --link-external-color-hover: var(--text-accent-hover);
+  --background-modifier-border-focus: var(--interactive-accent);
+  --checkbox-color: var(--interactive-accent);
+  --checkbox-color-hover: var(--interactive-accent-hover);
+  --checkbox-border-color-hover: var(--interactive-accent);
+  --checkbox-marker-color: var(--text-on-accent);
+  --divider-color-hover: var(--interactive-accent);
+  --graph-node-focused: var(--text-accent);
+  --tag-color: var(--text-accent);
+  --tag-color-hover: var(--text-accent-hover);
+  --tag-background: color-mix(in srgb, var(--interactive-accent) 10%, transparent);
+  --tag-background-hover: color-mix(in srgb, var(--interactive-accent) 18%, transparent);
+  --color-background-today: color-mix(in srgb, var(--interactive-accent) 12%, transparent);
+  --text-selection: color-mix(in srgb, var(--interactive-accent) 25%, transparent);
+  --indentation-guide-color-active: color-mix(in srgb, var(--interactive-accent) 45%, transparent);
+}
+body.theme-dark {
+  --text-accent: color-mix(in srgb, var(--interactive-accent) 80%, white);
+}
+body.theme-light:not(.vscode-use-obsidian-accent),
+body.theme-dark:not(.vscode-use-obsidian-accent) {
+  --accent-h: var(--vscode-accent-h, var(--vscode-accent-default-h)) !important;
+  --accent-s: var(--vscode-accent-s, var(--vscode-accent-default-s)) !important;
+  --accent-l: var(--vscode-accent-l, var(--vscode-accent-default-l)) !important;
+  --color-accent: var(--vscode-accent, var(--vscode-accent-default));
+  --interactive-accent-rgb: var(--vscode-accent-r, var(--vscode-accent-default-r)), var(--vscode-accent-g, var(--vscode-accent-default-g)), var(--vscode-accent-b, var(--vscode-accent-default-b));
+  --vscode-accent-custom-hover: color-mix(in srgb, var(--vscode-accent) 94%, var(--vscode-accent-hover-mix));
+  --interactive-accent-hover: var(--vscode-accent-custom-hover, var(--vscode-accent-hover-default));
+  /* Older renderers: choose black or white from the theme color's RGB
+   * brightness, instead of retaining Obsidian's unrelated inline foreground. */
+  --vscode-accent-contrast-channel: clamp(0, calc((128 -
+    (var(--vscode-accent-r, var(--vscode-accent-default-r)) * 0.299 +
+     var(--vscode-accent-g, var(--vscode-accent-default-g)) * 0.587 +
+     var(--vscode-accent-b, var(--vscode-accent-default-b)) * 0.114)) * 1000), 255);
+  --text-on-accent: rgb(var(--vscode-accent-contrast-channel), var(--vscode-accent-contrast-channel), var(--vscode-accent-contrast-channel)) !important;
+  --text-on-accent-inverted: rgb(calc(255 - var(--vscode-accent-contrast-channel)), calc(255 - var(--vscode-accent-contrast-channel)), calc(255 - var(--vscode-accent-contrast-channel))) !important;
+}
+/* Relative Lab lightness provides a black/white contrast fallback.
+ * contrast-color() chooses the higher WCAG contrast directly
+ * on newer renderers. Both use the actual background, in either source mode. */
+@supports (color: lab(from red l 0 0)) {
+  body.theme-light,
+  body.theme-dark,
+  body.theme-light:not(.vscode-use-obsidian-accent),
+  body.theme-dark:not(.vscode-use-obsidian-accent),
+  body .mod-cta,
+  body .tree-item-self.is-being-dragged {
+    --text-on-accent: lab(from var(--vscode-accent-surface, var(--interactive-accent)) clamp(0, calc((49.44 - l) * 1000), 100) 0 0) !important;
+    --text-on-accent-inverted: lab(from var(--vscode-accent-surface, var(--interactive-accent)) clamp(0, calc((l - 49.44) * 1000), 100) 0 0) !important;
+  }
+}
+@supports (color: contrast-color(red)) {
+  body.theme-light,
+  body.theme-dark,
+  body.theme-light:not(.vscode-use-obsidian-accent),
+  body.theme-dark:not(.vscode-use-obsidian-accent),
+  body .mod-cta,
+  body .tree-item-self.is-being-dragged {
+    --text-on-accent: contrast-color(var(--vscode-accent-surface, var(--interactive-accent))) !important;
+    --text-on-accent-inverted: contrast-color(var(--text-on-accent)) !important;
+  }
+}
+
 /* ============================================================
  *  Section 4 — Typography & Base Reset
  * ============================================================ */
 body {
   --font-interface-override: var(--font-interface-theme);
   --font-text-override:      var(--font-text-theme);
-  --font-monospace-override: var(--font-monospace-theme);
   --font-text-size:          15px;
+  --code-size:               1em;
+  --code-value:             var(--code-number);
+  --h2-size:                 1.5em;
+  --hr-thickness:            1px;
+  --hr-color:                var(--markdown-rule-color);
+  /* VS Code's window-close hover color comes from titlebarpart.css. */
+  --vscode-window-close-hover-background: rgba(232, 17, 35, 0.9);
+  --vscode-window-close-hover-foreground: #FFFFFF;
+  --vscode-widget-background: var(--background-primary);
+  --vscode-widget-border:     var(--background-modifier-border);
+  --vscode-tab-active-border: var(--interactive-accent);
+  --vscode-status-bar-hover-background: rgba(255, 255, 255, 0.12);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "ss01", "cv01", "cv09", "cv11";
@@ -459,12 +708,22 @@ body {
 
 .markdown-source-view.mod-cm6 .cm-line,
 .markdown-rendered {
-  line-height: 1.65;
+  line-height: var(--line-height-normal);
 }
 
-/* Heading sizes & weights */
+/* Integrated from hyphenation-and-justification.css.
+ * Author: https://forum.obsidian.md/u/boyd/summary
+ * Source: https://forum.obsidian.md/t/meta-post-common-css-hacks/1978/25
+ * Enable by default even when Style Settings is not installed. */
+body:not(.css-settings-manager) :is(.cm-s-obsidian, .markdown-preview-view),
+body.vscode-hyphenation-justification :is(.cm-s-obsidian, .markdown-preview-view) {
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* Legacy heading baseline. The VS Code preset overrides it below. */
 .markdown-rendered h1, .HyperMD-header-1, .cm-header-1 { font-size: 1.75em; font-weight: 600; }
-.markdown-rendered h2, .HyperMD-header-2, .cm-header-2 { font-size: 1.45em; font-weight: 600; }
+.markdown-rendered h2, .HyperMD-header-2, .cm-header-2 { font-size: var(--h2-size); font-weight: 600; }
 .markdown-rendered h3, .HyperMD-header-3, .cm-header-3 { font-size: 1.20em; font-weight: 600; }
 .markdown-rendered h4, .HyperMD-header-4, .cm-header-4 { font-size: 1.05em; font-weight: 600; }
 .markdown-rendered h5, .HyperMD-header-5, .cm-header-5 { font-size: 1.00em; font-weight: 600; }
@@ -484,7 +743,152 @@ body {
 .cm-header-5 { color: var(--h5-color); }
 .cm-header-6 { color: var(--h6-color); }
 
+/* VS Code Markdown: an H2 has 0.3em of space above a 1px bottom rule.
+ * Apply the rule to the editor line, not its individual token spans. */
+.markdown-rendered h2,
+body .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2 {
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--markdown-rule-color);
+}
+
 .inline-title { color: var(--inline-title-color); font-weight: 600; }
+
+/* VS Code Markdown typography (default, also without Style Settings).
+ * Adapted from Microsoft's MIT-licensed Markdown preview stylesheet:
+ * https://github.com/microsoft/vscode/blob/main/extensions/markdown-language-features/media/markdown.css
+ * Scope document variables here so UI/settings headings retain their own styles.
+ * The explicit Legacy class keeps the original rules and variables untouched. */
+@font-face {
+  font-family: "VSCode CJK Sans";
+  src: local("Sarasa Mono SC"), local("SarasaMonoSC-Regular"),
+    local("Noto Sans Mono CJK SC"), local("NotoSansMonoCJKsc-Regular"),
+    local("Microsoft YaHei"), local("PingFang SC"), local("PingFangSC-Regular"),
+    local("Noto Sans CJK SC"), local("NotoSansCJKsc-Regular");
+  font-style: normal;
+  font-weight: 400;
+  unicode-range: U+2E80-2FFF, U+3000-303F, U+31C0-31EF, U+3400-4DBF,
+    U+4E00-9FFF, U+F900-FAFF, U+FE10-FE1F, U+FE30-FE4F, U+FF00-FFEF, U+20000-2FFFF;
+}
+body:not(.vscode-markdown-legacy) :is(.markdown-rendered, .markdown-source-view.mod-cm6) {
+  --line-height-normal: 1.5714285714; /* 22px / the reference's 14px body font. */
+  --p-spacing: 16px;
+  --heading-spacing: 24px;
+  --h1-size: 2em;
+  --h2-size: 1.5em;
+  --h3-size: 1.25em;
+  --h4-size: 1em;
+  --h5-size: 0.875em;
+  --h6-size: 0.85em;
+  --h1-weight: 600;
+  --h2-weight: 600;
+  --h3-weight: 600;
+  --h4-weight: 600;
+  --h5-weight: 600;
+  --h6-weight: 600;
+  --h1-color: var(--text-normal);
+  --h2-color: var(--text-normal);
+  --h3-color: var(--text-normal);
+  --h4-color: var(--text-normal);
+  --h5-color: var(--text-normal);
+  --h6-color: var(--text-normal);
+  --h1-line-height: 1.25;
+  --h2-line-height: 1.25;
+  --h3-line-height: 1.25;
+  --h4-line-height: 1.25;
+  --h5-line-height: 1.25;
+  --h6-line-height: 1.25;
+  --h1-letter-spacing: normal;
+  --h2-letter-spacing: normal;
+  --h3-letter-spacing: normal;
+  --h4-letter-spacing: normal;
+  --h5-letter-spacing: normal;
+  --h6-letter-spacing: normal;
+  --bold-color: inherit;
+  --bold-weight: 700;
+  --vscode-table-cell-padding-y: 8px;
+  --vscode-table-cell-padding-x: 14px;
+  --blockquote-border-thickness: 5px;
+  --blockquote-color: inherit;
+  --link-decoration: none;
+  --link-decoration-hover: underline;
+  --link-external-decoration: none;
+  --link-external-decoration-hover: underline;
+  /* Preserve the official monospace override first. The local face supplies
+   * only missing CJK glyphs, so Latin text still uses the chosen code font. */
+  --font-monospace: var(--font-monospace-override), "VSCode CJK Sans", var(--font-monospace-theme), var(--font-monospace-default);
+}
+
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(h1, h2, h3, h4, h5, h6),
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header {
+  color: var(--text-normal);
+  font-weight: 600;
+  font-style: normal;
+  font-variant: normal;
+  letter-spacing: normal;
+  line-height: 1.25;
+  text-align: start;
+}
+body:not(.vscode-markdown-legacy) .markdown-rendered h1,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 { font-size: var(--h1-size); }
+body:not(.vscode-markdown-legacy) .markdown-rendered h2,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2 { font-size: var(--h2-size); }
+body:not(.vscode-markdown-legacy) .markdown-rendered h3,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-3 { font-size: var(--h3-size); }
+body:not(.vscode-markdown-legacy) .markdown-rendered h4,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-4 { font-size: var(--h4-size); }
+body:not(.vscode-markdown-legacy) .markdown-rendered h5,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-5 { font-size: var(--h5-size); }
+body:not(.vscode-markdown-legacy) .markdown-rendered h6,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-6 { font-size: var(--h6-size); }
+
+/* CodeMirror's heading span is inside the already-sized heading line.
+ * Inheriting prevents the em scale from being applied twice. */
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .HyperMD-header :is(.cm-header-1, .cm-header-2, .cm-header-3, .cm-header-4, .cm-header-5, .cm-header-6) {
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
+  margin-block: 24px 16px;
+}
+body:not(.vscode-markdown-legacy) .markdown-rendered h1 {
+  --heading-spacing: 0px;
+  margin-block-start: 0;
+}
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header {
+  padding-block-start: 24px;
+}
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
+  padding-block-start: 0;
+}
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(h1, h2),
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line:is(.HyperMD-header-1, .HyperMD-header-2) {
+  padding-block-end: 0.3em;
+  border-bottom: 1px solid var(--markdown-rule-color);
+}
+
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(strong, b),
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-strong {
+  font-weight: 700;
+}
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(strong, b),
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-strong:not(.cm-hmd-internal-link):not(.cm-link):not(.cm-url) {
+  color: inherit;
+}
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(p, ul, ol, pre) { margin-block-start: 0; }
+body:not(.vscode-markdown-legacy) .markdown-rendered p { margin-block-end: 16px; }
+body:not(.vscode-markdown-legacy) .markdown-rendered li p { margin-block-end: 0.7em; }
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(ul, ol) { margin-block-end: 0.7em; }
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(ul, ol) > li > :is(ul, ol):first-child { margin-block-end: 0; }
+body:not(.vscode-markdown-legacy) .markdown-rendered blockquote {
+  margin: 0;
+  padding: 0 16px 0 10px;
+  border-inline-start: 5px solid var(--blockquote-border-color);
+  border-radius: 2px;
+  color: inherit;
+}
 
 
 /* ============================================================
@@ -503,7 +907,7 @@ body.is-translucent .titlebar {
   backdrop-filter:         saturate(var(--vibrancy-saturation)) blur(var(--vibrancy-blur));
 }
 
-/* Status bar keeps accent color but goes vibrant */
+/* Status bar uses its own surface when translucency is enabled. */
 body.is-translucent .status-bar {
   background-color: color-mix(in srgb, var(--status-bar-background) 88%, transparent);
 }
@@ -542,9 +946,64 @@ body.is-translucent .prompt {
 /* Titlebar */
 .titlebar {
   background-color: var(--titlebar-background);
-  border-bottom: 0.5px solid var(--background-modifier-border);
+  border-bottom: 0.5px solid var(--titlebar-border-color);
 }
-.titlebar .titlebar-text { color: var(--text-muted); font-size: var(--font-ui-small); }
+.titlebar .titlebar-text { color: var(--titlebar-text-color); font-size: var(--font-ui-small); }
+body:is(.theme-light, .theme-dark) .titlebar .titlebar-text { opacity: 1; }
+body.is-focused .titlebar .titlebar-text {
+  color: var(--titlebar-text-color-focused);
+}
+
+/* Window controls inherit the same foreground as VS Code's titlebar.
+ * Keep the close hover independent of Obsidian's generic error backgrounds. */
+body .titlebar-button-container.mod-right .titlebar-button {
+  color: var(--titlebar-text-color);
+}
+body.is-focused .titlebar-button-container.mod-right .titlebar-button {
+  color: var(--titlebar-text-color-focused);
+}
+@media (hover: hover) {
+  body .titlebar-button-container.mod-right .titlebar-button:hover {
+    background-color: var(--vscode-window-control-hover-background);
+  }
+  body .titlebar-button-container.mod-right .titlebar-button.mod-close:hover {
+    background-color: var(--vscode-window-close-hover-background);
+    color: var(--vscode-window-close-hover-foreground);
+  }
+  body .titlebar-button-container.mod-right .titlebar-button.mod-close:hover .svg-icon {
+    fill: var(--vscode-window-close-hover-foreground);
+    stroke: var(--vscode-window-close-hover-foreground);
+  }
+}
+
+/* Preserve official workbench surfaces when translucency is enabled. */
+body:is(.theme-light, .theme-dark).is-translucent :is(.titlebar, .workspace-ribbon,
+    .workspace-tab-header-container, .workspace-split.mod-left-split,
+    .workspace-split.mod-right-split, .status-bar) {
+  background-color: var(--background-secondary);
+}
+body:is(.theme-light, .theme-dark).is-translucent :is(.modal, .suggestion-container, .menu, .prompt) {
+  background-color: var(--vscode-widget-background);
+}
+body.theme-dark.is-translucent:not(.is-focused) .titlebar {
+  background-color: var(--titlebar-background);
+}
+/* Hidden titlebars share the tab row; keep its surface independent of focus. */
+body.theme-dark .workspace-tabs.mod-top {
+  --tab-container-background: var(--background-secondary);
+  --sidebar-tab-container-background: var(--background-secondary);
+}
+/* Sidebar toggles belong to the tab strip, including when the window is inactive. */
+body .sidebar-toggle-button,
+body:is(.theme-light, .theme-dark).is-translucent .sidebar-toggle-button {
+  --tab-container-background: var(--background-secondary);
+  --sidebar-tab-container-background: var(--background-secondary);
+  background-color: var(--background-secondary) !important;
+}
+body.theme-dark:not(.is-focused) .status-bar,
+body.theme-dark.is-translucent:not(.is-focused) .status-bar {
+  background-color: var(--vscode-status-bar-background-inactive);
+}
 
 /* Ribbon (left activity bar) */
 .workspace-ribbon {
@@ -575,7 +1034,7 @@ body.is-translucent .prompt {
 }
 .status-bar .status-bar-item { color: var(--status-bar-text-color); }
 .status-bar .status-bar-item-icon { opacity: 0.9; }
-.status-bar .status-bar-item:hover { background-color: rgba(255, 255, 255, 0.12); }
+.status-bar .status-bar-item:hover { background-color: var(--vscode-status-bar-hover-background); }
 
 /* Tabs */
 .workspace-tab-header-container {
@@ -591,7 +1050,7 @@ body.is-translucent .prompt {
 .workspace-tab-header:not(.is-active):hover { background-color: var(--background-modifier-hover); }
 .workspace-tab-header.is-active {
   background-color: var(--tab-background-active);
-  border-top: 1px solid var(--interactive-accent);
+  border-top: 1px solid var(--vscode-tab-active-border);
 }
 .workspace-tab-header-inner-title { color: var(--tab-text-color); }
 .workspace-tab-header.is-active .workspace-tab-header-inner-title { color: var(--tab-text-color-active); }
@@ -641,11 +1100,15 @@ body.is-translucent .prompt {
   color: var(--text-normal);
   background-color: var(--background-modifier-hover);
 }
+.outline .tree-item-self.is-active,
+.outline .tree-item-self.is-selected {
+  color: var(--nav-item-color-active);
+}
 
 /* Search */
 .search-result-file-title { color: var(--text-normal); font-weight: 500; }
 .search-result-file-matched-text {
-  background-color: rgba(var(--interactive-accent-rgb), 0.22);
+  background-color: color-mix(in srgb, var(--interactive-accent) 22%, transparent);
   color: var(--text-normal);
   border-radius: var(--radius-s);
 }
@@ -681,7 +1144,7 @@ body.is-translucent .prompt {
 }
 
 .cm-active.cm-line {
-  background-color: rgba(var(--interactive-accent-rgb), 0.06);
+  background-color: var(--interactive-accent-background);
 }
 
 .cm-line { padding: 0 6px; }
@@ -694,11 +1157,12 @@ body.is-translucent .prompt {
   border-left-color: var(--indentation-guide-color-active);
 }
 
-/* HR */
+/* VS Code Markdown separators use the same 1px rule as H2 headings. */
 .markdown-rendered hr,
-.cm-hr {
+.markdown-source-view.mod-cm6 hr {
   border: none;
-  border-top: 1px solid var(--background-modifier-border);
+  height: 1px;
+  border-bottom: var(--hr-thickness) solid var(--hr-color);
 }
 
 
@@ -727,8 +1191,8 @@ body.is-translucent .prompt {
 /* Inline code — both editor and reading */
 .markdown-rendered :not(pre) > code,
 .cm-s-obsidian .cm-inline-code:not(.cm-formatting) {
-  font-family: var(--font-monospace-theme);
-  font-size: 0.92em;
+  font-family: var(--font-monospace, var(--font-monospace-theme));
+  font-size: 1em;
   background-color: var(--code-background);
   color: var(--code-normal);
   padding: 0.1em 0.4em;
@@ -740,127 +1204,367 @@ body.is-translucent .prompt {
 .markdown-rendered pre,
 .markdown-source-view.mod-cm6 .HyperMD-codeblock-bg {
   background-color: var(--code-background);
+}
+
+/* Reading view: `pre` is one container, so its border can be applied once. */
+.markdown-rendered pre {
+  font-family: var(--font-monospace, var(--font-monospace-theme)) !important;
+  font-size: inherit !important;
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--radius-m);
   box-shadow: var(--shadow-s);
+  max-width: 100%;
+  overflow: hidden;
+  white-space: pre;
+}
+
+/* Use Obsidian's native block backgrounds to close one frame around the
+ * opening fence, editable lines and closing fence with its internal scrollbar. */
+body .markdown-source-view.mod-cm6 {
+  --code-border-width: 1px;
+  --code-border-color: var(--background-modifier-border);
+  --code-radius: var(--radius-m);
 }
 .markdown-rendered pre {
   padding: 14px 16px;
 }
 .markdown-rendered pre > code {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
   background: transparent;
   padding: 0;
   border: none;
-  font-family: var(--font-monospace-theme);
-  font-size: 13px;
+  font-family: var(--font-monospace, var(--font-monospace-theme)) !important;
+  font-size: inherit !important;
   color: var(--code-normal);
+  white-space: inherit;
+  overflow-wrap: normal;
+  word-break: normal;
 }
-.HyperMD-codeblock { color: var(--code-normal); font-family: var(--font-monospace-theme); }
+/* Scroll only the code; the native copy button stays on the outer frame. */
+body .markdown-rendered pre > button.copy-code-button {
+  z-index: 1;
+  background-color: var(--code-background);
+}
 
-/* CodeMirror 6 syntax tokens (editor view) */
-.cm-s-obsidian .cm-keyword,
-.cm-s-obsidian .tok-keyword           { color: var(--code-keyword); }
-.cm-s-obsidian .cm-string,
-.cm-s-obsidian .cm-string-2,
-.cm-s-obsidian .tok-string            { color: var(--code-string); }
-.cm-s-obsidian .cm-comment,
-.cm-s-obsidian .cm-block-comment,
-.cm-s-obsidian .cm-line-comment,
-.cm-s-obsidian .tok-comment           { color: var(--code-comment); font-style: italic; }
-.cm-s-obsidian .cm-number,
-.cm-s-obsidian .tok-number            { color: var(--code-number); }
-.cm-s-obsidian .cm-atom,
-.cm-s-obsidian .tok-atom              { color: var(--code-keyword); }
-.cm-s-obsidian .cm-variable,
-.cm-s-obsidian .cm-variable-2,
-.cm-s-obsidian .cm-variable-3,
-.cm-s-obsidian .tok-variableName      { color: var(--code-variable); }
-.cm-s-obsidian .cm-def,
-.cm-s-obsidian .tok-definition        { color: var(--code-function); }
-.cm-s-obsidian .cm-property,
-.cm-s-obsidian .tok-propertyName      { color: var(--code-property); }
-.cm-s-obsidian .cm-type,
-.cm-s-obsidian .cm-meta,
-.cm-s-obsidian .tok-typeName,
-.cm-s-obsidian .tok-className         { color: var(--code-type); }
-.cm-s-obsidian .cm-builtin,
-.cm-s-obsidian .tok-standard          { color: var(--code-builtin); }
-.cm-s-obsidian .cm-tag,
-.cm-s-obsidian .tok-tagName           { color: var(--code-tag); }
-.cm-s-obsidian .cm-attribute,
-.cm-s-obsidian .tok-attributeName     { color: var(--code-attribute); }
-.cm-s-obsidian .cm-operator,
-.cm-s-obsidian .tok-operator          { color: var(--code-operator); }
-.cm-s-obsidian .cm-punctuation,
-.cm-s-obsidian .cm-bracket,
-.cm-s-obsidian .tok-punctuation,
-.cm-s-obsidian .tok-bracket           { color: var(--code-punctuation); }
-.cm-s-obsidian .cm-qualifier          { color: var(--code-type); }
-.cm-s-obsidian .cm-link,
-.cm-s-obsidian .tok-link              { color: var(--text-accent); text-decoration: underline; }
-.cm-s-obsidian .cm-url,
-.cm-s-obsidian .tok-url               { color: var(--text-faint); }
-.cm-s-obsidian .cm-quote              { color: var(--text-muted); font-style: italic; }
-.cm-s-obsidian .cm-error,
-.cm-s-obsidian .tok-invalid           { color: var(--text-error); border-bottom: 1px dotted var(--text-error); }
-.cm-s-obsidian .cm-regexp,
-.cm-s-obsidian .tok-regexp            { color: var(--code-regex); }
-.cm-s-obsidian .tok-controlKeyword    { color: var(--code-control); }
+/* Live Preview code typography; editing behavior belongs to Better Obsidian. */
+body .markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock {
+  color: var(--code-normal);
+  font-family: var(--font-monospace, var(--font-monospace-theme)) !important;
+  font-size: inherit !important;
+}
 
-/* Prism (Reading view) */
-.markdown-rendered code[class*="language-"],
-.markdown-rendered pre[class*="language-"] { color: var(--code-normal); }
-.token.keyword                    { color: var(--code-keyword); }
-.token.string,
-.token.attr-value                 { color: var(--code-string); }
-.token.comment,
-.token.prolog,
-.token.cdata                      { color: var(--code-comment); font-style: italic; }
-.token.function                   { color: var(--code-function); }
-.token.variable                   { color: var(--code-variable); }
-.token.property,
-.token.attr-name                  { color: var(--code-property); }
-.token.class-name,
-.token.namespace                  { color: var(--code-type); }
-.token.builtin                    { color: var(--code-builtin); }
-.token.tag                        { color: var(--code-tag); }
-.token.number,
-.token.boolean,
-.token.constant,
-.token.symbol                     { color: var(--code-number); }
-.token.operator,
-.token.entity,
-.token.url                        { color: var(--code-operator); }
-.token.punctuation                { color: var(--code-punctuation); }
-.token.regex                      { color: var(--code-regex); }
-.token.important                  { color: var(--code-important); font-weight: 600; }
-.token.selector                   { color: var(--code-type); }
-.token.atrule                     { color: var(--code-control); }
-.token.parameter                  { color: var(--code-variable); }
-.token.deleted                    { color: var(--text-error); }
-.token.inserted                   { color: var(--text-success); }
 
+body {
+  /* Live Preview label placement and the return-arrow distance from its frame. */
+  --vscode-code-flair-top: 2px;
+  --vscode-code-flair-right: 6px;
+  --vscode-code-wrap-marker-inset: 12px;
+  --vscode-code-line-number-color: color-mix(in srgb, var(--code-normal) 45%, var(--code-background));
+  --vscode-code-active-line-number-color: color-mix(in srgb, var(--code-normal) 85%, var(--code-background));
+  --vscode-code-active-line-background: color-mix(in srgb, var(--code-background) 94%, white);
+}
+body.theme-light {
+  --vscode-code-active-line-background: color-mix(in srgb, var(--code-background) 40%, var(--background-primary));
+}
+body .markdown-source-view.mod-cm6 .code-block-flair {
+  top: var(--vscode-code-flair-top);
+  right: var(--vscode-code-flair-right);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 32px;
+  min-height: 24px;
+  line-height: 1;
+  padding-block: 2px;
+}
+body .markdown-source-view.mod-cm6 .code-block-flair > svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* The native code background otherwise overrides the prose active-line rule. */
+body .markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock:is(.cm-active, .cm-activeLine) {
+  --vscode-code-row-background: var(--vscode-code-active-line-background);
+  background-color: var(--vscode-code-row-background);
+}
+
+/* Shared VS Code 2026 palette for CodeMirror (Live Preview) and Prism (Reading).
+ * Better Obsidian code-scroll supplies Prism marks in Live Preview for matching token
+ * classification. Native CodeMirror mappings remain available without it.
+ * Source: microsoft/vscode extensions/theme-defaults/themes/2026-{light,dark}.json */
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code span:not(.token) {
+  color: inherit !important;
+}
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-keyword,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-keyword,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-controlKeyword,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.keyword,
+body .markdown-rendered pre .token.keyword,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.atrule,
+body .markdown-rendered pre .token.atrule {
+  color: var(--code-keyword);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-string,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-string-2,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-string,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.string,
+body .markdown-rendered pre .token.string,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.char,
+body .markdown-rendered pre .token.char,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.attr-value,
+body .markdown-rendered pre .token.attr-value,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.url,
+body .markdown-rendered pre .token.url {
+  color: var(--code-string);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-comment,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-block-comment,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-line-comment,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-comment,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.comment,
+body .markdown-rendered pre .token.comment,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.prolog,
+body .markdown-rendered pre .token.prolog,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.doctype,
+body .markdown-rendered pre .token.doctype,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.cdata,
+body .markdown-rendered pre .token.cdata {
+  color: var(--code-comment);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-number,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-number,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-atom,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-atom,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-bool,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-literal,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.number,
+body .markdown-rendered pre .token.number,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.boolean,
+body .markdown-rendered pre .token.boolean,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.constant,
+body .markdown-rendered pre .token.constant,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.symbol,
+body .markdown-rendered pre .token.symbol,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.entity,
+body .markdown-rendered pre .token.entity {
+  color: var(--code-number);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-variable,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-variable-3,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-variableName,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.variable,
+body .markdown-rendered pre .token.variable {
+  color: var(--code-variable);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-def,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-definition,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-function,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-functionName,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.function,
+body .markdown-rendered pre .token.function,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.function-variable,
+body .markdown-rendered pre .token.function-variable {
+  color: var(--code-function);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-property,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-propertyName,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-variableName2,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.property,
+body .markdown-rendered pre .token.property,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.property-access,
+body .markdown-rendered pre .token.property-access,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.parameter,
+body .markdown-rendered pre .token.parameter {
+  color: var(--code-property);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-type,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-qualifier,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-typeName,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-className,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.class-name,
+body .markdown-rendered pre .token.class-name,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.namespace,
+body .markdown-rendered pre .token.namespace {
+  color: var(--code-type);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-builtin,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-variable-2,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-standard,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.builtin,
+body .markdown-rendered pre .token.builtin {
+  color: var(--code-builtin);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-tag,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-tagName,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.tag,
+body .markdown-rendered pre .token.tag,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.selector,
+body .markdown-rendered pre .token.selector {
+  color: var(--code-tag);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-attribute,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-attributeName,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.attr-name,
+body .markdown-rendered pre .token.attr-name {
+  color: var(--code-attribute);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-operator,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-operator,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.operator,
+body .markdown-rendered pre .token.operator {
+  color: var(--code-operator);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-punctuation,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-bracket,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-punctuation,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-bracket,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.punctuation,
+body .markdown-rendered pre .token.punctuation {
+  color: var(--code-punctuation);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-meta,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-meta {
+  color: var(--code-keyword);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-link,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-link,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-url,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-url {
+  color: var(--code-string);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-regexp,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-regexp,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.regex,
+body .markdown-rendered pre .token.regex {
+  color: var(--code-regex);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-error,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-invalid,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.invalid,
+body .markdown-rendered pre .token.invalid {
+  color: var(--code-invalid);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.important,
+body .markdown-rendered pre .token.important {
+  color: var(--code-important);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-deleted,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.deleted,
+body .markdown-rendered pre .token.deleted {
+  color: var(--code-deleted);
+}
+
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock .tok-inserted,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code .token.inserted,
+body .markdown-rendered pre .token.inserted {
+  color: var(--code-inserted);
+}
+
+/* VS Code gives JSON object keys their own tag-green scope. */
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock:is(.language-json, .language-jsonc, .language-json5) .cm-property,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock:is(.language-json, .language-jsonc, .language-json5) .tok-propertyName,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock.vscode-prism-code:is(.language-json, .language-jsonc, .language-json5) .token.property,
+body .markdown-rendered pre :is(.language-json, .language-jsonc, .language-json5) .token.property {
+  color: var(--code-json-property);
+}
+
+/* Keep Obsidian's chosen monospace font through Code Styler's line wrappers
+ * and Prism/CodeMirror spans. No code tokens use italic styles. */
+body .markdown-rendered pre > code,
+body .markdown-rendered pre > code :where(div, span),
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock,
+body .markdown-source-view.mod-cm6 .HyperMD-codeblock :where(span):not(.code-block-flair) {
+  font-family: var(--font-monospace) !important;
+  font-style: normal !important;
+}
 
 /* ============================================================
  *  Section 11 — Callouts
  * ============================================================ */
+/* Callout 间距在此调整（仅 CSS；与两种 Markdown 样式的段落边距独立）。 */
+body {
+  --vscode-callout-padding-y: 12px;     /* 块内上下留白 */
+  --vscode-callout-padding-x: 16px;     /* 块内左右留白 */
+  --vscode-callout-title-gap: 8px;      /* 标题与正文之间 */
+  --vscode-callout-paragraph-gap: 8px;  /* 正文段落及内容块之间 */
+  --vscode-callout-margin-y: 16px;      /* 阅读视图块外上下留白 */
+}
 .callout {
   --callout-color: var(--callout-note);
   background-color: rgba(var(--callout-color), 0.08);
   border-left: 3px solid rgb(var(--callout-color));
   border-radius: var(--callout-radius);
-  padding: 10px 14px;
-  box-shadow: var(--shadow-s);
+  --callout-title-padding: 0;
+  --callout-content-padding: 0;
+  padding: var(--vscode-callout-padding-y) var(--vscode-callout-padding-x);
+  margin-block: var(--vscode-callout-margin-y);
+  box-shadow: none;
 }
 .theme-dark .callout { background-color: rgba(var(--callout-color), 0.12); }
 
 .callout-title {
   color: rgb(var(--callout-color));
   font-weight: 600;
-  font-size: 0.95em;
+  font-size: 1em;
+  line-height: 1.4;
+  gap: 0.5em;
 }
-.callout-icon { color: rgb(var(--callout-color)); }
-.callout-content { color: var(--text-normal); }
+.callout-icon {
+  --icon-size: 1.1em;
+  color: rgb(var(--callout-color));
+  height: 1.4em;
+}
+.callout-fold {
+  --icon-size: 1em;
+  height: 1.4em;
+  padding-inline: 0;
+}
+.callout-content {
+  color: var(--text-normal);
+  margin-block-start: var(--vscode-callout-title-gap);
+}
+.callout-content:empty { margin-block-start: 0; }
+
+/* Remove edge margins rather than compensating with uneven box padding.
+ * Actual paragraph breaks remain visible; <br> retains the normal line height. */
+body .callout .callout-content > :is(p, ul, ol, pre, blockquote, table, .callout, h1, h2, h3, h4, h5, h6) {
+  margin-block: 0;
+}
+body .callout .callout-content > :not(:first-child) {
+  margin-block-start: var(--vscode-callout-paragraph-gap);
+}
+body .markdown-source-view.mod-cm6 .callout-content .callout {
+  margin-block: var(--vscode-callout-paragraph-gap) 0;
+}
+body .markdown-source-view.mod-cm6 .callout-content > .callout:first-child { margin-block-start: 0; }
+body .callout .callout-content > :first-child { margin-block-start: 0; }
+body .callout .callout-content > :last-child { margin-block-end: 0; }
+body .callout .callout-content li > p { margin-block: 0; }
+body .callout .callout-content li > p + p {
+  margin-block-start: var(--vscode-callout-paragraph-gap);
+}
 
 .callout[data-callout="note"]      { --callout-color: var(--callout-note); }
 .callout[data-callout="tip"],
@@ -897,29 +1601,53 @@ body.is-translucent .prompt {
  * ============================================================ */
 
 /* Tables */
+/* Adjust row spacing here. The first value controls top/bottom padding,
+ * the second controls left/right padding in both Reading and Live Preview. */
+body {
+  --vscode-table-cell-padding-y: 8px;
+  --vscode-table-cell-padding-x: 14px;
+}
+
 .markdown-rendered table {
   border-collapse: collapse;
-  border-radius: var(--radius-m);
-  overflow: hidden;
-  border: 1px solid var(--table-border-color);
+  margin-bottom: 0.7em;
+  border: none !important;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent !important;
 }
-.markdown-rendered th {
-  background-color: var(--table-header-background);
+.markdown-rendered table thead,
+.markdown-rendered table tbody,
+.markdown-rendered table tr {
+  background: transparent !important;
+}
+.markdown-rendered table th,
+.markdown-rendered table td {
+  border: none !important;
+  background: transparent !important;
+  padding: var(--vscode-table-cell-padding-y) var(--vscode-table-cell-padding-x);
+}
+
+/* Live Preview keeps cell padding on the inner editor wrapper. Leave the
+ * outer cell at zero so padding is not applied twice or shifts selection. */
+body .markdown-source-view.mod-cm6 .cm-table-widget th,
+body .markdown-source-view.mod-cm6 .cm-table-widget td {
+  padding: 0;
+}
+body .markdown-source-view.mod-cm6 .cm-table-widget .table-cell-wrapper {
+  padding: var(--vscode-table-cell-padding-y) var(--vscode-table-cell-padding-x);
+}
+
+.markdown-rendered table th {
   color: var(--table-header-color);
-  font-weight: 600;
-  border-bottom: 1px solid var(--table-border-color);
-  padding: 8px 12px;
+  font-weight: 700;
   text-align: left;
 }
-.markdown-rendered td {
-  border-top: 1px solid var(--table-border-color);
-  padding: 8px 12px;
+.markdown-rendered table thead th {
+  border-bottom: 1px solid var(--table-header-border-color) !important;
 }
-.markdown-rendered tr:nth-child(even) td {
-  background-color: var(--table-row-alt-background);
-}
-.markdown-rendered tr:hover td {
-  background-color: var(--table-row-hover-background);
+.markdown-rendered table > tbody > tr + tr > td {
+  border-top: 1px solid var(--table-row-border-color) !important;
 }
 
 /* Blockquote */
@@ -931,44 +1659,51 @@ body.is-translucent .prompt {
   margin-left: 0;
 }
 
-/* Checkboxes */
-.task-list-item-checkbox,
-input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
-  border: 1.5px solid var(--checkbox-border-color);
-  border-radius: var(--radius-s);
-  background-color: transparent;
-  cursor: pointer;
+/* Native checkbox sizing and SVG checkmark are supplied by Obsidian. */
+/* Reading view's native +0.2em offset conflicts with middle alignment.
+ * Match the baseline adjustment used by Live Preview instead. */
+body .markdown-preview-view .task-list-item-checkbox {
+  top: -0.1em;
   vertical-align: middle;
-  position: relative;
-  transition: all var(--anim-duration-fast) var(--anim-motion-smooth);
 }
-.task-list-item-checkbox:hover,
-input[type="checkbox"]:hover {
-  border-color: var(--checkbox-border-color-hover);
+/* Both native renderers use these variables for completed-task styling.
+ * Without Style Settings, the default remains enabled. Removing its class
+ * restores Obsidian's line-through decoration. */
+body:not(.css-settings-manager),
+body.vscode-dim-completed-tasks {
+  --checklist-done-decoration: none;
+  --checklist-done-color: inherit;
 }
-.task-list-item-checkbox:checked,
-input[type="checkbox"]:checked {
-  background-color: var(--checkbox-color);
-  border-color: var(--checkbox-color);
+.markdown-rendered li.task-list-item.is-checked {
+  color: var(--checklist-done-color);
+  text-decoration: var(--checklist-done-decoration);
 }
-.task-list-item-checkbox:checked::after,
-input[type="checkbox"]:checked::after {
-  content: "";
-  position: absolute;
-  left: 3.5px;
-  top: 0.5px;
-  width: 4px;
-  height: 8px;
-  border: solid var(--checkbox-marker-color);
-  border-width: 0 1.5px 1.5px 0;
-  transform: rotate(45deg);
+/* Fade glyphs using each element's own currentColor, without replacing link,
+ * bold or code colors. Filling text separately leaves the native checkbox and
+ * inline-code backgrounds untouched, and avoids multiplying nested opacity. */
+body:is(:not(.css-settings-manager), .vscode-dim-completed-tasks)
+  :is(.markdown-rendered li.task-list-item, .markdown-source-view.mod-cm6 .HyperMD-task-line):is([data-task="x"], [data-task="X"], .is-checked),
+body:is(:not(.css-settings-manager), .vscode-dim-completed-tasks)
+  :is(.markdown-rendered li.task-list-item, .markdown-source-view.mod-cm6 .HyperMD-task-line):is([data-task="x"], [data-task="X"], .is-checked)
+  > :is(p, span, a, strong, b, em, i, code, mark),
+body:is(:not(.css-settings-manager), .vscode-dim-completed-tasks)
+  :is(.markdown-rendered li.task-list-item, .markdown-source-view.mod-cm6 .HyperMD-task-line):is([data-task="x"], [data-task="X"], .is-checked)
+  > :is(p, span, a, strong, b, em, i, code, mark) :is(span, a, strong, b, em, i, code, mark) {
+  -webkit-text-fill-color: color-mix(in srgb, currentColor calc(var(--vscode-completed-task-opacity, 50) * 1%), transparent);
+  text-decoration-color: color-mix(in srgb, currentColor calc(var(--vscode-completed-task-opacity, 50) * 1%), transparent);
 }
-.task-list-item.is-checked .task-list-item-content,
-li.task-list-item[data-task="x"] { color: var(--text-faint); text-decoration: line-through; }
+/* An unchecked child task must not inherit its completed parent's text fill. */
+body:is(:not(.css-settings-manager), .vscode-dim-completed-tasks)
+  .markdown-rendered li.task-list-item:not([data-task="x"]):not([data-task="X"]):not(.is-checked),
+body:is(:not(.css-settings-manager), .vscode-dim-completed-tasks)
+  .markdown-rendered li.task-list-item:not([data-task="x"]):not([data-task="X"]):not(.is-checked)
+  > :is(p, span, a, strong, b, em, i, code, mark),
+body:is(:not(.css-settings-manager), .vscode-dim-completed-tasks)
+  .markdown-rendered li.task-list-item:not([data-task="x"]):not([data-task="X"]):not(.is-checked)
+  > :is(p, span, a, strong, b, em, i, code, mark) :is(span, a, strong, b, em, i, code, mark) {
+  -webkit-text-fill-color: currentColor;
+  text-decoration-color: currentColor;
+}
 
 /* Tags */
 a.tag,
@@ -1029,7 +1764,7 @@ a.tag:hover,
 .canvas-node:hover { box-shadow: var(--shadow-m); }
 .canvas-node.is-focused {
   border-color: var(--interactive-accent);
-  box-shadow: 0 0 0 2px rgba(var(--interactive-accent-rgb), 0.30), var(--shadow-m);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--interactive-accent) 30%, transparent), var(--shadow-m);
 }
 .canvas-node-label { color: var(--text-normal); }
 .canvas-edge { stroke: var(--canvas-edge); }
@@ -1039,9 +1774,9 @@ a.tag:hover,
  *  Section 15 — Settings Modal & Command Palette
  * ============================================================ */
 .modal {
-  background-color: var(--background-primary);
+  background-color: var(--vscode-widget-background);
   border-radius: var(--modal-radius);
-  border: 0.5px solid var(--background-modifier-border);
+  border: 0.5px solid var(--vscode-widget-border);
   box-shadow: var(--shadow-l);
 }
 .modal-title { color: var(--text-normal); font-weight: 600; }
@@ -1063,13 +1798,49 @@ a.tag:hover,
   background-color: var(--background-modifier-hover);
 }
 .vertical-tab-nav-item.is-active {
-  color: var(--interactive-accent);
+  color: var(--nav-item-color-active);
   background-color: var(--background-modifier-active-hover);
   font-weight: 500;
 }
-.setting-item { border-top: 1px solid var(--background-modifier-border); }
+.mod-settings .setting-item { border-top: 0; }
 .setting-item-name { color: var(--text-normal); }
 .setting-item-description { color: var(--text-muted); font-size: var(--font-ui-small); }
+
+/* Settings rows should read as one continuous panel, not a stack of cards. */
+.mod-settings .setting-item,
+.mod-settings .setting-item-heading,
+.mod-settings .style-settings-heading,
+.mod-settings .style-settings-container .setting-item {
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Settings section headings share the H2 rule, without restoring row cards. */
+.mod-settings .setting-item.setting-item-heading {
+  position: relative;
+  padding-bottom: 10px; /* 标题到分割线的距离 */
+  margin-bottom: 16px; /* 分割线下方的留白 */
+  border-bottom: none !important;
+}
+
+/* Start the rule at the title's content edge, inside the heading's padding.
+ * Use ::before so Obsidian's ::after keyboard-focus outline stays intact. */
+.mod-settings .setting-item.setting-item-heading::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  inset-inline-start: var(--size-4-4);
+  inset-inline-end: var(--size-4-4);
+  border-bottom: 1px solid var(--markdown-rule-color);
+  pointer-events: none;
+}
+
+/* Top-level Style Settings titles have a 9px collapse icon and an 8px gap. */
+.mod-settings .setting-item.setting-item-heading.style-settings-heading[data-level="0"]::before {
+  inset-inline-start: calc(var(--size-4-4) + 17px);
+}
 
 /* Inputs / buttons */
 input[type="text"],
@@ -1087,12 +1858,22 @@ textarea,
   transition: border-color var(--anim-duration-fast) var(--anim-motion-smooth),
               box-shadow var(--anim-duration-fast) var(--anim-motion-smooth);
 }
-input:focus,
-textarea:focus,
-.dropdown:focus {
+/* Use the existing 1px border for focus, without Obsidian's outer ring.
+ * Match the native typed-input selectors so their focus shadow cannot win. */
+input:is([type="text"], [type="search"], [type="email"], [type="password"], [type="number"]):is(:focus, :focus-visible, :active),
+textarea:is(:focus, :focus-visible, :active),
+.dropdown:is(:focus, :focus-visible, :active) {
   outline: none;
   border-color: var(--interactive-accent);
-  box-shadow: 0 0 0 3px rgba(var(--interactive-accent-rgb), 0.20);
+  box-shadow: none;
+}
+
+/* Keep native select text clear of Obsidian's right-side dropdown arrows. */
+.dropdown {
+  padding-inline-end: 34px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 button,
 .clickable-icon {
@@ -1109,23 +1890,74 @@ button.mod-cta,
 button.mod-cta:hover,
 .mod-cta:hover { background-color: var(--interactive-accent-hover); }
 
+/* Solid accent surfaces need their own foreground, including nested tree
+ * labels and items that remain active or selected while being dragged. */
+body .tree-item-self.is-being-dragged,
+body .mod-cta {
+  --vscode-accent-surface: var(--interactive-accent);
+  --nav-item-color: var(--text-on-accent);
+  --nav-item-color-hover: var(--text-on-accent);
+  --nav-item-color-active: var(--text-on-accent);
+  --nav-item-color-selected: var(--text-on-accent);
+  --nav-item-background-hover: var(--interactive-accent-hover);
+  --nav-item-background-active: var(--interactive-accent);
+  --nav-item-background-selected: var(--interactive-accent);
+  --icon-color: var(--text-on-accent);
+  --icon-color-hover: var(--text-on-accent);
+  color: var(--text-on-accent);
+}
+body .mod-cta:hover {
+  --vscode-accent-surface: var(--interactive-accent-hover);
+}
+body .tree-item-self.is-being-dragged {
+  --nav-item-background-hover: var(--interactive-accent);
+  background-color: var(--interactive-accent);
+}
+body :is(.tree-item-self.is-being-dragged, .mod-cta)
+  :is(.tree-item-inner, .nav-file-title-content, .nav-folder-title-content,
+      .tree-item-flair, .tree-item-icon, .collapse-icon, .svg-icon) {
+  color: var(--text-on-accent);
+}
+
 /* Command palette / Quick switcher */
 .prompt {
-  background-color: var(--background-primary);
+  background-color: var(--vscode-widget-background);
   border-radius: var(--modal-radius);
-  border: 0.5px solid var(--background-modifier-border);
+  border: 0.5px solid var(--vscode-widget-border);
   box-shadow: var(--shadow-l);
 }
 .prompt-input {
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid var(--background-modifier-border);
-  border-radius: 0;
   font-size: var(--font-ui-large);
   padding: 14px 16px;
 }
-.prompt-input:focus {
-  border-color: var(--background-modifier-border);
+
+/* Match the input surface to the prompt's inner corners and indicate focus
+ * with only its bottom separator. Phone prompts use a separate, pill-shaped
+ * input at the bottom of the panel. */
+body:not(.is-phone) .prompt .prompt-input-container {
+  /* Only the results list should shrink when the prompt reaches max-height. */
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  border-radius: max(0px, calc(var(--modal-radius) - 1px))
+                 max(0px, calc(var(--modal-radius) - 1px)) 0 0;
+  corner-shape: inherit;
+  background-color: var(--background-modifier-form-field);
+  border-bottom: 1px solid var(--background-modifier-border);
+  overflow: hidden;
+  box-shadow: none;
+}
+body:not(.is-phone) .prompt .prompt-input-container:focus-within {
+  border-bottom-color: var(--interactive-accent);
+}
+body:not(.is-phone) .prompt input.prompt-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: inherit;
+  corner-shape: inherit;
+  outline: none;
   box-shadow: none;
 }
 .suggestion-item {
@@ -1138,14 +1970,14 @@ button.mod-cta:hover,
   color: var(--text-normal);
 }
 .suggestion-highlight {
-  background-color: rgba(var(--interactive-accent-rgb), 0.22);
+  background-color: color-mix(in srgb, var(--interactive-accent) 22%, transparent);
   color: var(--text-normal);
   border-radius: 2px;
   font-weight: 600;
 }
 .menu {
-  background-color: var(--background-primary);
-  border: 0.5px solid var(--background-modifier-border);
+  background-color: var(--vscode-widget-background);
+  border: 0.5px solid var(--vscode-widget-border);
   border-radius: var(--radius-m);
   box-shadow: var(--shadow-l);
   padding: 4px;
@@ -1232,7 +2064,7 @@ button.mod-cta:hover,
               border-color     var(--anim-duration-default) var(--anim-motion-smooth);
 }
 
-body:not(.is-focused) .titlebar { opacity: 0.85; }
+body:not(.is-focused) .titlebar { opacity: 1; }
 body:not(.is-focused) .workspace-tab-header.is-active { border-top-color: var(--background-modifier-border); }
 
 /* Reduced motion — respect macOS Accessibility setting */

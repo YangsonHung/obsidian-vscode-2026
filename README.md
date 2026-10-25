@@ -1,4 +1,4 @@
-# VSCode 2026 — Obsidian Theme
+# VSCode — Obsidian Theme
 
 > A faithful port of Microsoft Visual Studio 2026's Fluent visual language to Obsidian, with first-class macOS vibrancy support.
 
@@ -6,9 +6,9 @@
 
 ## Features
 
-- **Light & Dark mode** — both first-class, follows system color scheme
-- **VS 2026 Fluent UI tokens** — `#005FB8` / `#2F72C4` accent, `#F6F8FC` / `#DDE7FF` Light surfaces, `#1F1F1F` / `#181818` Dark surfaces
-- **Complete VSCode Dark+ / Light+ syntax highlighting** — keyword / string / comment / function / variable / type / number / control / regex, double-mapped for both CodeMirror 6 (editor) and Prism.js (reading view)
+- **Light & Dark mode** — follows system color scheme; 2026 Dark uses `#121314` editor backgrounds, `#191A1B` sidebar/window surfaces and `#202122` menus/widgets
+- **Theme accent colors** — `#0069CC` for 2026 Light, `#005FB8` for Light Modern, and `#2F72C4` for this theme's Dark palette; configurable per mode, with optional Obsidian accent override
+- **VSCode syntax highlighting** — 2026 Light/Dark colors and optional Light Modern colors; the local **Better Obsidian** companion supplies matching Prism token classification in Live Preview and Reading view
 - **macOS Tahoe-style polish** — SF Pro / SF Mono system font stack, 8–12 px rounded corners, defocused-window dim, `prefers-reduced-motion` support
 - **Vibrancy / translucency** — sidebar, status bar, command palette and modals get `backdrop-filter` blur when *Translucent window* is enabled
 - **Overlay scrollbars** — hidden by default, fade in on hover, macOS-style
@@ -38,12 +38,46 @@
 
 ## Customization
 
+With **Style Settings** installed, open **Settings → Style Settings → VSCode → 浅色配色** to choose **VS Code 2026 Light** (default) or **VS Code Light Modern**. The preset changes light-mode interface colors and both editor and reading-view syntax colors. Dark mode keeps its existing palette. Monospace fonts, code sizes, Markdown layout and scrolling are independent of the preset.
+
+**Settings → Style Settings → VSCode → Markdown 样式** selects the document typography independently of the light/dark palette:
+
+- **VS Code** (default, including without Style Settings) follows Microsoft's [Markdown preview stylesheet](https://github.com/microsoft/vscode/blob/main/extensions/markdown-language-features/media/markdown.css). H1–H6 use `2 / 1.5 / 1.25 / 1 / 0.875 / 0.85em`, weight 600 and line-height 1.25; H1 and H2 have a 1px bottom rule with 0.3em padding. Headings use the normal text color, body bold uses weight 700 and keeps surrounding/link colors, paragraphs use a 16px bottom margin and body line-height is `22/14` of the configured font size. Table cells use 5px × 10px padding and blockquotes use a 5px left rule. Links are unadorned until hovered. Reading view and editor headings share the same scale, without applying the size twice to CodeMirror's nested spans.
+- **Legacy** preserves the original Markdown appearance, including heading sizes/colors, the H2-only rule, weight-600 reading-view bold, existing line/paragraph spacing and 10px table row padding. Its original link and font fallback rules are retained.
+
+In the VS Code preset, code still honors **Appearance → Monospace font** first. A local, CJK-only font face supplies missing Chinese glyphs using an installed sans/mono CJK font (Sarasa/Noto Mono CJK, Microsoft YaHei, PingFang or Noto Sans CJK), rather than falling through to a serif font. It does not replace Latin code characters or download fonts; for example, Fira Code remains the Latin font while Windows Chinese falls back to Microsoft YaHei. Custom fonts that already contain Chinese take priority. Two-sided justification and the Better Obsidian code behaviors remain independently configurable.
+
+Callout spacing is configured directly in **Section 11 — Callouts** of `theme.css`, with no Style Settings controls. `--vscode-callout-padding-y: 12px` and `--vscode-callout-padding-x: 16px` set the inner padding; `--vscode-callout-title-gap: 8px` separates title and content; `--vscode-callout-paragraph-gap: 8px` separates paragraphs/content blocks. `--vscode-callout-margin-y: 16px` controls the outside spacing in Reading view; Live Preview retains source-line spacing outside the widget. The content's first/last margins are removed so the bottom padding does not accumulate with paragraph margins. Soft line breaks within one paragraph retain the normal body line height. These controls apply to both Markdown presets.
+
+Dark window surfaces follow Microsoft's [2026-dark.json](https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/2026-dark.json). Editing and reading areas use `#121314`; sidebars, the activity bar, tab strip and active title/status bars use `#191A1B`. Inactive title/status bars use `#121314`; menus and widgets use `#202122`, with `#2A2B2C` separators. These surfaces stay opaque when translucency is enabled, preserving the official contrast between the editor and surrounding panels.
+
+Light Modern follows Microsoft's [light_modern.json](https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/light_modern.json), including its inherited Light+ syntax palette. It retains this theme's black bold text and non-italic code styling.
+
+Under **Settings → Style Settings → VSCode**, **使用 Obsidian 强调色覆写** is off by default. Enable it to use **Appearance → Accent color**; disable it to use **主题强调色（浅色 / 深色）**, which provides separate light and dark color pickers and reset buttons. Neither option changes the saved Obsidian accent color.
+
+Resetting a picker clears its custom color. Light mode then follows the selected preset (`#0069CC` for 2026 Light or `#005FB8` for Light Modern); dark mode returns to `#2F72C4`. Style Settings displays the 2026 Light value as its light default. Custom theme colors are retained while the Obsidian override is enabled. Buttons, focus indicators, checkboxes, links and accent backgrounds share the selected source, and button text contrasts with the actual accent background.
+
+**两端对齐与自动断词** is enabled by default, including without Style Settings. Its switch controls justification and automatic hyphenation in both reading and editing views. The former `hyphenation-and-justification.css` snippet is integrated into the theme; it no longer needs to be enabled separately.
+
+**已完成待办文字变淡** is enabled by default in **Settings → Style Settings → VSCode**, including when Style Settings is absent. Completed tasks retain the original text, link, bold and inline-code colors while their glyphs fade without a strike-through in Reading view and Live Preview. **已完成待办文字不透明度（%）** defaults to 50; lower values fade more, and 100 preserves the original appearance. Disabling the switch restores Obsidian's full-line strike-through. Nested text is faded once; unchecked child tasks and checkbox icons keep their normal contrast. Checkboxes use Obsidian's native SVG checkmark and sizing, retaining the theme's accent colors and reading-view alignment adjustment.
+
+Keep the local **Better Obsidian** plugin and its **代码块增强（code-scroll）** feature enabled for matching editable code highlighting and per-block horizontal scrolling in Live Preview. Reading-view code scrolls inside its frame while its copy button stays at the upper right.
+
+**代码块自动折行** is off by default. Enable it in **Settings → Better Obsidian → 代码块** to wrap code in both views, including long words and paths. The plugin's code enhancement feature always wraps PDF export, even when the screen wrapping switch is off. A return arrow marks each visual continuation; actual source-line endings stay unmarked. Arrows are painted and do not alter copied code.
+
+**代码块行号** is also off by default. Enable it in **Settings → Better Obsidian → 代码块** to number original code lines in both views and PDF, starting at 1 for each block. Blank lines are counted; visual continuations have no extra number. Numbers stay in the left gutter during horizontal scrolling and are excluded from copied code. Keep its **代码块增强（code-scroll）** feature enabled. Existing Style Settings wrapping/numbering preferences migrate to the plugin; these switches no longer appear in Style Settings.
+
+The theme is responsible for CSS appearance: palette, accent, fonts, spacing, frames, Markdown layout and justification. Its Style Settings panel contains only those appearance options. Better Obsidian owns code scrolling, wrap/number behavior, PDF continuation markers, LaTeX conversion and paste cleanup. Disabling the plugin leaves theme appearance available and returns Live Preview to native editing behavior. Plugin code layout works with other themes as well.
+
+In `theme.css`, `--vscode-code-flair-top` and `--vscode-code-flair-right` position the Live Preview language/copy label. Lower top values move it up. `--vscode-code-wrap-marker-inset` (`12px`) controls the Live Preview return-arrow inset from the right edge. The label centers both language text and the copy/confirmation icon.
+
+Line numbers use the quieter `--vscode-code-line-number-color`. In the editor, the cursor line uses `--vscode-code-active-line-background` and its number uses `--vscode-code-active-line-number-color`; the gutter shares the active row background, including while scrolling or wrapping. All three colors follow the current light/dark palette without changing syntax colors.
+
 Every color is a CSS variable. Override in a snippet:
 
 ```css
 /* .obsidian/snippets/my-tweaks.css */
 .theme-dark {
-  --interactive-accent: #4EC9B0;       /* swap accent to teal */
   --code-keyword:       #C586C0;       /* purple keywords */
 }
 .theme-light {
@@ -55,7 +89,7 @@ Common variables to tweak:
 
 | Variable | Purpose |
 | --- | --- |
-| `--interactive-accent` | Primary accent color (links, active tab top border, status bar) |
+| `--interactive-accent` | Effective accent color; configure its source and light/dark colors through Style Settings |
 | `--background-primary` / `--background-secondary` | Editor and sidebar backgrounds |
 | `--code-{keyword,string,comment,function,variable,type,number,control}` | Syntax highlight tokens |
 | `--callout-{note,tip,info,success,question,warning,failure,error,bug,example,quote,abstract,todo}` | Callout colors (RGB triplets) |
