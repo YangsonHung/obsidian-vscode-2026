@@ -30,6 +30,17 @@
 name: VSCode
 id: vscode-theme
 settings:
+  - id: vscode-markdown-style
+    title: Markdown 样式
+    description: VS Code 参考官方 Markdown 预览的标题层级、下划线、字重与段落间距；Legacy 保留原有样式。适用于阅读视图和编辑视图，不影响界面配色。
+    type: class-select
+    allowEmpty: false
+    default: vscode-markdown-native
+    options:
+      - label: VS Code
+        value: vscode-markdown-native
+      - label: Legacy
+        value: vscode-markdown-legacy
   - id: vscode-light-palette
     title: 浅色配色
     description: 切换浅色界面与代码高亮配色；深色模式保持当前配色。
@@ -710,7 +721,7 @@ body.vscode-hyphenation-justification :is(.cm-s-obsidian, .markdown-preview-view
   hyphens: auto;
 }
 
-/* Heading sizes & weights */
+/* Legacy heading baseline. The VS Code preset overrides it below. */
 .markdown-rendered h1, .HyperMD-header-1, .cm-header-1 { font-size: 1.75em; font-weight: 600; }
 .markdown-rendered h2, .HyperMD-header-2, .cm-header-2 { font-size: var(--h2-size); font-weight: 600; }
 .markdown-rendered h3, .HyperMD-header-3, .cm-header-3 { font-size: 1.20em; font-weight: 600; }
@@ -741,6 +752,143 @@ body .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2 {
 }
 
 .inline-title { color: var(--inline-title-color); font-weight: 600; }
+
+/* VS Code Markdown typography (default, also without Style Settings).
+ * Adapted from Microsoft's MIT-licensed Markdown preview stylesheet:
+ * https://github.com/microsoft/vscode/blob/main/extensions/markdown-language-features/media/markdown.css
+ * Scope document variables here so UI/settings headings retain their own styles.
+ * The explicit Legacy class keeps the original rules and variables untouched. */
+@font-face {
+  font-family: "VSCode CJK Sans";
+  src: local("Sarasa Mono SC"), local("SarasaMonoSC-Regular"),
+    local("Noto Sans Mono CJK SC"), local("NotoSansMonoCJKsc-Regular"),
+    local("Microsoft YaHei"), local("PingFang SC"), local("PingFangSC-Regular"),
+    local("Noto Sans CJK SC"), local("NotoSansCJKsc-Regular");
+  font-style: normal;
+  font-weight: 400;
+  unicode-range: U+2E80-2FFF, U+3000-303F, U+31C0-31EF, U+3400-4DBF,
+    U+4E00-9FFF, U+F900-FAFF, U+FE10-FE1F, U+FE30-FE4F, U+FF00-FFEF, U+20000-2FFFF;
+}
+body:not(.vscode-markdown-legacy) :is(.markdown-rendered, .markdown-source-view.mod-cm6) {
+  --line-height-normal: 1.5714285714; /* 22px / the reference's 14px body font. */
+  --p-spacing: 16px;
+  --heading-spacing: 24px;
+  --h1-size: 2em;
+  --h2-size: 1.5em;
+  --h3-size: 1.25em;
+  --h4-size: 1em;
+  --h5-size: 0.875em;
+  --h6-size: 0.85em;
+  --h1-weight: 600;
+  --h2-weight: 600;
+  --h3-weight: 600;
+  --h4-weight: 600;
+  --h5-weight: 600;
+  --h6-weight: 600;
+  --h1-color: var(--text-normal);
+  --h2-color: var(--text-normal);
+  --h3-color: var(--text-normal);
+  --h4-color: var(--text-normal);
+  --h5-color: var(--text-normal);
+  --h6-color: var(--text-normal);
+  --h1-line-height: 1.25;
+  --h2-line-height: 1.25;
+  --h3-line-height: 1.25;
+  --h4-line-height: 1.25;
+  --h5-line-height: 1.25;
+  --h6-line-height: 1.25;
+  --h1-letter-spacing: normal;
+  --h2-letter-spacing: normal;
+  --h3-letter-spacing: normal;
+  --h4-letter-spacing: normal;
+  --h5-letter-spacing: normal;
+  --h6-letter-spacing: normal;
+  --bold-color: inherit;
+  --bold-weight: 700;
+  --vscode-table-cell-padding-y: 8px;
+  --vscode-table-cell-padding-x: 14px;
+  --blockquote-border-thickness: 5px;
+  --blockquote-color: inherit;
+  --link-decoration: none;
+  --link-decoration-hover: underline;
+  --link-external-decoration: none;
+  --link-external-decoration-hover: underline;
+  /* Preserve the official monospace override first. The local face supplies
+   * only missing CJK glyphs, so Latin text still uses the chosen code font. */
+  --font-monospace: var(--font-monospace-override), "VSCode CJK Sans", var(--font-monospace-theme), var(--font-monospace-default);
+}
+
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(h1, h2, h3, h4, h5, h6),
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header {
+  color: var(--text-normal);
+  font-weight: 600;
+  font-style: normal;
+  font-variant: normal;
+  letter-spacing: normal;
+  line-height: 1.25;
+  text-align: start;
+}
+body:not(.vscode-markdown-legacy) .markdown-rendered h1,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 { font-size: var(--h1-size); }
+body:not(.vscode-markdown-legacy) .markdown-rendered h2,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2 { font-size: var(--h2-size); }
+body:not(.vscode-markdown-legacy) .markdown-rendered h3,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-3 { font-size: var(--h3-size); }
+body:not(.vscode-markdown-legacy) .markdown-rendered h4,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-4 { font-size: var(--h4-size); }
+body:not(.vscode-markdown-legacy) .markdown-rendered h5,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-5 { font-size: var(--h5-size); }
+body:not(.vscode-markdown-legacy) .markdown-rendered h6,
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-6 { font-size: var(--h6-size); }
+
+/* CodeMirror's heading span is inside the already-sized heading line.
+ * Inheriting prevents the em scale from being applied twice. */
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .HyperMD-header :is(.cm-header-1, .cm-header-2, .cm-header-3, .cm-header-4, .cm-header-5, .cm-header-6) {
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
+  margin-block: 24px 16px;
+}
+body:not(.vscode-markdown-legacy) .markdown-rendered h1 {
+  --heading-spacing: 0px;
+  margin-block-start: 0;
+}
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header {
+  padding-block-start: 24px;
+}
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
+  padding-block-start: 0;
+}
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(h1, h2),
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-line:is(.HyperMD-header-1, .HyperMD-header-2) {
+  padding-block-end: 0.3em;
+  border-bottom: 1px solid var(--markdown-rule-color);
+}
+
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(strong, b),
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-strong {
+  font-weight: 700;
+}
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(strong, b),
+body:not(.vscode-markdown-legacy) .markdown-source-view.mod-cm6 .cm-strong:not(.cm-hmd-internal-link):not(.cm-link):not(.cm-url) {
+  color: inherit;
+}
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(p, ul, ol, pre) { margin-block-start: 0; }
+body:not(.vscode-markdown-legacy) .markdown-rendered p { margin-block-end: 16px; }
+body:not(.vscode-markdown-legacy) .markdown-rendered li p { margin-block-end: 0.7em; }
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(ul, ol) { margin-block-end: 0.7em; }
+body:not(.vscode-markdown-legacy) .markdown-rendered :is(ul, ol) > li > :is(ul, ol):first-child { margin-block-end: 0; }
+body:not(.vscode-markdown-legacy) .markdown-rendered blockquote {
+  margin: 0;
+  padding: 0 16px 0 10px;
+  border-inline-start: 5px solid var(--blockquote-border-color);
+  border-radius: 2px;
+  color: inherit;
+}
 
 
 /* ============================================================
@@ -1355,23 +1503,68 @@ body .markdown-source-view.mod-cm6 .HyperMD-codeblock :where(span):not(.code-blo
 /* ============================================================
  *  Section 11 — Callouts
  * ============================================================ */
+/* Callout 间距在此调整（仅 CSS；与两种 Markdown 样式的段落边距独立）。 */
+body {
+  --vscode-callout-padding-y: 12px;     /* 块内上下留白 */
+  --vscode-callout-padding-x: 16px;     /* 块内左右留白 */
+  --vscode-callout-title-gap: 8px;      /* 标题与正文之间 */
+  --vscode-callout-paragraph-gap: 8px;  /* 正文段落及内容块之间 */
+  --vscode-callout-margin-y: 16px;      /* 阅读视图块外上下留白 */
+}
 .callout {
   --callout-color: var(--callout-note);
   background-color: rgba(var(--callout-color), 0.08);
   border-left: 3px solid rgb(var(--callout-color));
   border-radius: var(--callout-radius);
-  padding: 10px 14px;
-  box-shadow: var(--shadow-s);
+  --callout-title-padding: 0;
+  --callout-content-padding: 0;
+  padding: var(--vscode-callout-padding-y) var(--vscode-callout-padding-x);
+  margin-block: var(--vscode-callout-margin-y);
+  box-shadow: none;
 }
 .theme-dark .callout { background-color: rgba(var(--callout-color), 0.12); }
 
 .callout-title {
   color: rgb(var(--callout-color));
   font-weight: 600;
-  font-size: 0.95em;
+  font-size: 1em;
+  line-height: 1.4;
+  gap: 0.5em;
 }
-.callout-icon { color: rgb(var(--callout-color)); }
-.callout-content { color: var(--text-normal); }
+.callout-icon {
+  --icon-size: 1.1em;
+  color: rgb(var(--callout-color));
+  height: 1.4em;
+}
+.callout-fold {
+  --icon-size: 1em;
+  height: 1.4em;
+  padding-inline: 0;
+}
+.callout-content {
+  color: var(--text-normal);
+  margin-block-start: var(--vscode-callout-title-gap);
+}
+.callout-content:empty { margin-block-start: 0; }
+
+/* Remove edge margins rather than compensating with uneven box padding.
+ * Actual paragraph breaks remain visible; <br> retains the normal line height. */
+body .callout .callout-content > :is(p, ul, ol, pre, blockquote, table, .callout, h1, h2, h3, h4, h5, h6) {
+  margin-block: 0;
+}
+body .callout .callout-content > :not(:first-child) {
+  margin-block-start: var(--vscode-callout-paragraph-gap);
+}
+body .markdown-source-view.mod-cm6 .callout-content .callout {
+  margin-block: var(--vscode-callout-paragraph-gap) 0;
+}
+body .markdown-source-view.mod-cm6 .callout-content > .callout:first-child { margin-block-start: 0; }
+body .callout .callout-content > :first-child { margin-block-start: 0; }
+body .callout .callout-content > :last-child { margin-block-end: 0; }
+body .callout .callout-content li > p { margin-block: 0; }
+body .callout .callout-content li > p + p {
+  margin-block-start: var(--vscode-callout-paragraph-gap);
+}
 
 .callout[data-callout="note"]      { --callout-color: var(--callout-note); }
 .callout[data-callout="tip"],
@@ -1411,8 +1604,8 @@ body .markdown-source-view.mod-cm6 .HyperMD-codeblock :where(span):not(.code-blo
 /* Adjust row spacing here. The first value controls top/bottom padding,
  * the second controls left/right padding in both Reading and Live Preview. */
 body {
-  --vscode-table-cell-padding-y: 10px;
-  --vscode-table-cell-padding-x: 10px;
+  --vscode-table-cell-padding-y: 8px;
+  --vscode-table-cell-padding-x: 14px;
 }
 
 .markdown-rendered table {
